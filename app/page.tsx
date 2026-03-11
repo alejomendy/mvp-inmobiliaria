@@ -47,7 +47,7 @@ export default function Home() {
             Propiedades
           </a>
           <a href="#" className="font-serif tracking-widest text-2xl uppercase text-[#3A3833] hover:opacity-60 transition-opacity">
-            Estilo de Vida
+            Sobre Nosotros
           </a>
           <a href="#" className="font-serif tracking-widest text-2xl uppercase text-[#3A3833] hover:opacity-60 transition-opacity">
             Contacto
