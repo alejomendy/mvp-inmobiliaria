@@ -32,7 +32,7 @@ export default function Home() {
             <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#3A3833] transition-all duration-300 group-hover:w-full"></span>
           </a>
           <a href="#" className="hover:text-[#3A3833] transition-colors relative group py-2">
-            Estilo de Vida
+            Sobre Nosotros
             <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#3A3833] transition-all duration-300 group-hover:w-full"></span>
           </a>
           <a href="#" className="hover:text-[#3A3833] transition-colors relative group py-2">
