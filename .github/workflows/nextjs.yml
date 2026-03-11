@@ -2,7 +2,7 @@ name: Deploy Next.js site to Pages
 
 on:
   push:
-    branches: ["main"] # Asegúrate de que este sea el nombre de tu rama principal
+    branches: ["master"] # Asegúrate de que este sea el nombre de tu rama principal
 
 permissions:
   contents: read
