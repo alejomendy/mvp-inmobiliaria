@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  basePath: '/mvp-inmobiliaria',
+  assetPrefix: '/mvp-inmobiliaria',
+  trailingSlash: true,
   images: {
     unoptimized: true,
     dangerouslyAllowSVG: true,
