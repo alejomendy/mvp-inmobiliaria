@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -27,10 +28,10 @@ export default function Home() {
 
         {/* Right: Desktop Navigation */}
         <nav className="hidden md:flex gap-12 text-xs tracking-[0.2em] uppercase font-semibold text-[#66615C]">
-          <a href="#" className="hover:text-[#3A3833] transition-colors relative group py-2">
+          <Link href="/propiedades" className="hover:text-[#3A3833] transition-colors relative group py-2">
             Propiedades
             <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#3A3833] transition-all duration-300 group-hover:w-full"></span>
-          </a>
+          </Link>
           <a href="#" className="hover:text-[#3A3833] transition-colors relative group py-2">
             Sobre Nosotros
             <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#3A3833] transition-all duration-300 group-hover:w-full"></span>
@@ -43,9 +44,9 @@ export default function Home() {
 
         {/* Mobile Navigation Dropdown */}
         <nav className="absolute top-full left-0 w-full bg-[#FAFAF7]/80 backdrop-blur-md border-b border-black/5 flex flex-col items-center py-8 gap-8 opacity-0 pointer-events-none peer-checked/menu:opacity-100 peer-checked/menu:pointer-events-auto transition-all duration-300 md:hidden z-40 shadow-lg origin-top scale-y-95 peer-checked/menu:scale-y-100">
-          <a href="#" className="font-serif tracking-widest text-2xl uppercase text-[#3A3833] hover:opacity-60 transition-opacity">
+          <Link href="/propiedades" className="font-serif tracking-widest text-2xl uppercase text-[#3A3833] hover:opacity-60 transition-opacity">
             Propiedades
-          </a>
+          </Link>
           <a href="#" className="font-serif tracking-widest text-2xl uppercase text-[#3A3833] hover:opacity-60 transition-opacity">
             Sobre Nosotros
           </a>
@@ -74,7 +75,7 @@ export default function Home() {
               Encuentra la luz en<br />cada rincón.
             </h1>
 
-            {/* Search Pill - Inline on all devices */}
+            {/* Search Pill */}
             <div className="bg-white/95 backdrop-blur-sm rounded-full flex flex-row items-center p-1.5 md:p-2 w-full max-w-[90%] md:max-w-xl shadow-lg md:shadow-xl overflow-hidden transition-all mx-auto">
               <input
                 type="text"
@@ -106,25 +107,25 @@ export default function Home() {
           {/* Right: Content */}
           <div className="flex flex-col w-full max-w-md">
             <span className="font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#8B9485] mb-6 font-bold">
-              Nuestra Filosofía
+              Sobre Nosotros
             </span>
             <h2 className="font-serif text-5xl md:text-6xl leading-[1.1] mb-6 text-[#3A3833]">
               Hogares que respiran contigo.
             </h2>
             <p className="font-sans text-sm md:text-base leading-relaxed text-[#66615C] mb-10">
-              Creemos que una propiedad es más que un simple refugio. Es un santuario diseñado para capturar la luz natural, promover la calidez e inspirar momentos únicos. Cada espacio que seleccionamos es elegido por su alma, individualidad y conexión con su entorno.
+              En Chapero Inmobiliaria seleccionamos propiedades con alma, priorizando la luz natural, la calidad constructiva y la armonía con el entorno. Somos una firma dedicada a quienes entienden que el lujo reside en la simplicidad y en el confort de un hogar bien elegido.
             </p>
             <a
-              href="#"
+              href="/sobre-nosotros"
               className="font-sans text-[10px] md:text-xs uppercase tracking-widest border-b border-[#3A3833] pb-1 hover:text-[#8B9485] hover:border-[#8B9485] transition-colors self-start font-bold text-[#3A3833]"
             >
-              Conoce nuestra exclusiva selección
+              Conoce mas de nosotros
             </a>
           </div>
         </div>
       </section>
 
-      {/* 5. Living Spaces Section */}
+      {/* 5. Living Spaces (Espacios de Vida) — imágenes clickeables */}
       <section className="px-6 md:px-12 pt-24 pb-32 md:pt-32 md:pb-40 bg-white relative z-15 rounded-t-[3rem] -mt-12 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
@@ -141,81 +142,127 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Asymmetrical Masonry Grid - Expanded to 3 Columns */}
+          {/* Asymmetrical Masonry Grid — cada imagen es clickeable */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
 
             {/* Left Column */}
             <div className="flex flex-col gap-6 md:gap-8">
-              {/* Row 1 / Left -> Landscape 3:2 */}
-              <div className="relative w-full aspect-[3/2] rounded-[2rem] overflow-hidden bg-[#F0EBE1] group">
+              {/* Card 1 → penthouse-luminoso-palermo */}
+              <Link href="/propiedades/penthouse-luminoso-palermo" className="relative w-full aspect-[3/2] rounded-[2rem] overflow-hidden bg-[#F0EBE1] group block">
                 <Image
                   src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=85"
                   fill
-                  alt="Living Space 1 - Landscape"
+                  alt="Penthouse Luminoso - Palermo"
                   className="object-cover transition-transform duration-[1.5s] group-hover:scale-[1.03]"
                   unoptimized
                 />
-              </div>
-              {/* Row 2 / Left -> Square (matching width of top) */}
-              <div className="relative w-full aspect-square rounded-[2rem] overflow-hidden bg-[#F0EBE1] group">
+                <div className="absolute inset-0 bg-[#3A3833]/0 group-hover:bg-[#3A3833]/50 transition-all duration-500" />
+                <div className="absolute inset-0 flex flex-col justify-end p-7 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/70 font-bold mb-1">En Venta · Palermo</span>
+                  <span className="font-serif text-white text-2xl leading-tight">Penthouse Luminoso</span>
+                  <span className="font-sans text-white/80 text-xs mt-1 tracking-wider">USD 420.000 · 180 m²</span>
+                </div>
+              </Link>
+              {/* Card 2 → casa-minimalista-nordelta */}
+              <Link href="/propiedades/casa-minimalista-nordelta" className="relative w-full aspect-square rounded-[2rem] overflow-hidden bg-[#F0EBE1] group block">
                 <Image
                   src="https://images.unsplash.com/photo-1600489000022-c2086d79f9d4?auto=format&fit=crop&w=1000&q=85"
                   fill
-                  alt="Living Space 2 - Square"
+                  alt="Casa Minimalista - Nordelta"
                   className="object-cover transition-transform duration-[1.5s] group-hover:scale-[1.03]"
                   unoptimized
                 />
-              </div>
+                <div className="absolute inset-0 bg-[#3A3833]/0 group-hover:bg-[#3A3833]/50 transition-all duration-500" />
+                <div className="absolute inset-0 flex flex-col justify-end p-7 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/70 font-bold mb-1">En Venta · Nordelta</span>
+                  <span className="font-serif text-white text-2xl leading-tight">Casa Minimalista</span>
+                  <span className="font-sans text-white/80 text-xs mt-1 tracking-wider">USD 780.000 · 320 m²</span>
+                </div>
+              </Link>
             </div>
 
             {/* Middle Column */}
             <div className="flex flex-col gap-6 md:gap-8">
-              {/* Row 1 / Middle -> Portrait 4:5 (taller than landscape) */}
-              <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#F0EBE1] group mt-0 lg:mt-12">
+              {/* Card 3 → loft-industrial-san-telmo */}
+              <Link href="/propiedades/loft-industrial-san-telmo" className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#F0EBE1] group block mt-0 lg:mt-12">
                 <Image
                   src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1000&q=85"
                   fill
-                  alt="Living Space 3 - Portrait 4:5"
+                  alt="Loft Industrial - San Telmo"
                   className="object-cover transition-transform duration-[1.5s] group-hover:scale-[1.03]"
                   unoptimized
                 />
-              </div>
-              {/* Row 2 / Middle -> Taller Portrait 3:4 */}
-              <div className="relative w-full aspect-[3/4] rounded-[2rem] overflow-hidden bg-[#F0EBE1] group">
+                <div className="absolute inset-0 bg-[#3A3833]/0 group-hover:bg-[#3A3833]/50 transition-all duration-500" />
+                <div className="absolute inset-0 flex flex-col justify-end p-7 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/70 font-bold mb-1">Alquiler · San Telmo</span>
+                  <span className="font-serif text-white text-2xl leading-tight">Loft Industrial</span>
+                  <span className="font-sans text-white/80 text-xs mt-1 tracking-wider">USD 1.800/mes · 95 m²</span>
+                </div>
+              </Link>
+              {/* Card 4 → suite-premium-recoleta */}
+              <Link href="/propiedades/suite-premium-recoleta" className="relative w-full aspect-[3/4] rounded-[2rem] overflow-hidden bg-[#F0EBE1] group block">
                 <Image
                   src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=85"
                   fill
-                  alt="Living Space 4 - Taller Portrait"
+                  alt="Suite Premium - Recoleta"
                   className="object-cover transition-transform duration-[1.5s] group-hover:scale-[1.03]"
                   unoptimized
                 />
-              </div>
+                <div className="absolute inset-0 bg-[#3A3833]/0 group-hover:bg-[#3A3833]/50 transition-all duration-500" />
+                <div className="absolute inset-0 flex flex-col justify-end p-7 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/70 font-bold mb-1">Alquiler · Recoleta</span>
+                  <span className="font-serif text-white text-2xl leading-tight">Suite Premium</span>
+                  <span className="font-sans text-white/80 text-xs mt-1 tracking-wider">USD 2.400/mes · 130 m²</span>
+                </div>
+              </Link>
             </div>
 
-            {/* Right Column (NEW) */}
+            {/* Right Column */}
             <div className="flex flex-col gap-6 md:gap-8">
-              {/* Row 1 / Right -> Square */}
-              <div className="relative w-full aspect-square rounded-[2rem] overflow-hidden bg-[#F0EBE1] group mt-0 lg:mt-24">
+              {/* Card 5 → residencia-belgrano-r */}
+              <Link href="/propiedades/residencia-belgrano-r" className="relative w-full aspect-square rounded-[2rem] overflow-hidden bg-[#F0EBE1] group block mt-0 lg:mt-24">
                 <Image
                   src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1000&q=85"
                   fill
-                  alt="Living Space 5 - Dining Square"
+                  alt="Residencia Belgrano R"
                   className="object-cover transition-transform duration-[1.5s] group-hover:scale-[1.03]"
                   unoptimized
                 />
-              </div>
-              {/* Row 2 / Right -> Portrait 4:5 */}
-              <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#F0EBE1] group">
+                <div className="absolute inset-0 bg-[#3A3833]/0 group-hover:bg-[#3A3833]/50 transition-all duration-500" />
+                <div className="absolute inset-0 flex flex-col justify-end p-7 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/70 font-bold mb-1">En Venta · Belgrano R</span>
+                  <span className="font-serif text-white text-2xl leading-tight">Residencia Belgrano R</span>
+                  <span className="font-sans text-white/80 text-xs mt-1 tracking-wider">USD 650.000 · 450 m²</span>
+                </div>
+              </Link>
+              {/* Card 6 → wellness-suite-puerto-madero */}
+              <Link href="/propiedades/wellness-suite-puerto-madero" className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#F0EBE1] group block">
                 <Image
                   src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1000&q=85"
                   fill
-                  alt="Living Space 6 - Spa Portrait"
+                  alt="Wellness Suite - Puerto Madero"
                   className="object-cover transition-transform duration-[1.5s] group-hover:scale-[1.03]"
                   unoptimized
                 />
-              </div>
+                <div className="absolute inset-0 bg-[#3A3833]/0 group-hover:bg-[#3A3833]/50 transition-all duration-500" />
+                <div className="absolute inset-0 flex flex-col justify-end p-7 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/70 font-bold mb-1">En Venta · Puerto Madero</span>
+                  <span className="font-serif text-white text-2xl leading-tight">Wellness Suite</span>
+                  <span className="font-sans text-white/80 text-xs mt-1 tracking-wider">USD 520.000 · 145 m²</span>
+                </div>
+              </Link>
             </div>
 
+          </div>
+
+          {/* CTA to all properties */}
+          <div className="mt-16 flex justify-center">
+            <Link
+              href="/propiedades"
+              className="font-sans text-[10px] md:text-xs uppercase tracking-widest border border-[#3A3833] text-[#3A3833] rounded-full px-10 py-4 hover:bg-[#3A3833] hover:text-white transition-colors font-bold"
+            >
+              Ver todas las propiedades
+            </Link>
           </div>
         </div>
       </section>
@@ -235,7 +282,7 @@ export default function Home() {
                 Regístrate para recibir novedades sobre propiedades excepcionales e historias sobre cómo vivir maravillosamente.
               </p>
 
-              {/* Email Pill - Mobile stacked, Desktop inline */}
+              {/* Email Pill */}
               <div className="bg-white rounded-[2rem] md:rounded-full flex flex-col md:flex-row items-center p-2 w-full max-w-sm md:max-w-md border border-[#D2D6CB] shadow-sm gap-2 md:gap-0 transition-all">
                 <input
                   type="email"
