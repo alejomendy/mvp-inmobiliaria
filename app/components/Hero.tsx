@@ -1,5 +1,4 @@
 import Image from "next/image";
-import logoHero from "@/lib/assets/logo-Rita_Asociados.png";
 
 export default function Hero() {
   return (
@@ -17,13 +16,15 @@ export default function Hero() {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <Image
-            src={logoHero}
-            alt="Logo Ritta & Asociados"
+            src="/mvp-inmobiliaria/logo.png"
+            alt="Logo Rita & Asociados"
+            width={200}
+            height={80}
             className="w-auto h-24 md:h-32 object-contain mb-6 drop-shadow-md"
             priority
           />
           <h1 className="title-serif text-white text-5xl md:text-8xl mb-10 hero-title-fadeIn drop-shadow-sm">
-            Ritta & Asociados
+            Rita & Asociados
           </h1>
 
           <div className="search-pill mx-auto w-full max-w-[90%] md:max-w-none">

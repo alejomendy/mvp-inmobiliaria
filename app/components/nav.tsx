@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import logoHero from "@/lib/assets/logo-Rita_Asociados.png";
 
 export default function Nav() {
   return (
@@ -12,7 +11,7 @@ export default function Nav() {
         <div className="nav-container">
           <Link href="/" className="font-serif text-3xl tracking-widest uppercase text-[#3A3833] drop-shadow-sm relative z-50 flex items-center hover:opacity-80 transition-opacity">
             <Image
-              src={logoHero}
+              src="/mvp-inmobiliaria/logo.png"
               alt="Logo Rita & Asociados"
               width={180}
               height={60}
