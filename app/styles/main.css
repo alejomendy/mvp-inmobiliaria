@@ -76,7 +76,7 @@
 /* Typography */
 .title-serif {
   font-family: var(--font-playfair);
-  color: #3A3833;
+  color: #1A1917;
   line-height: 1.05;
 }
 
@@ -84,7 +84,7 @@
   font-family: var(--font-inter);
   font-size: 0.875rem;
   line-height: 1.625;
-  color: #66615C;
+  color: #4A4744;
 }
 
 @media (min-width: 768px) {
@@ -98,7 +98,7 @@
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #8B9485;
+  color: #6B7465;
   font-weight: 700;
 }
 
@@ -295,7 +295,12 @@
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background-color: rgba(58, 56, 51, 0.2);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.text-white-force {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .search-pill {
@@ -345,12 +350,12 @@
 .property-card-overlay {
   position: absolute;
   inset: 0;
-  background-color: rgba(58, 56, 51, 0);
+  background-color: rgba(0, 0, 0, 0.1);
   transition: background-color 0.5s ease;
 }
 
 .property-card-container:hover .property-card-overlay {
-  background-color: rgba(58, 56, 51, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .property-card-content {

@@ -18,13 +18,13 @@ function GalleryCard({ property, className }: { property: any, className: string
       />
       <div className="property-card-overlay" />
       <div className="property-card-content">
-        <span className="label-caps !text-white/80 mb-2">
+        <span className="label-caps !text-white !opacity-90 mb-2 drop-shadow-sm">
           {property.neighborhood} · {property.type}
         </span>
-        <h3 className="title-serif text-2xl text-white mb-4">
+        <h3 className="title-serif text-2xl text-white-force mb-4">
           {property.title}
         </h3>
-        <span className="link-underline !text-white !border-white !text-[10px]">
+        <span className="link-underline !text-white !border-white !text-[10px] drop-shadow-sm">
           Ver detalles
         </span>
       </div>

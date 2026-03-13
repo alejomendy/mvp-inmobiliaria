@@ -23,8 +23,8 @@ export default function Hero() {
             className="w-auto h-24 md:h-32 object-contain mb-6 drop-shadow-md"
             priority
           />
-          <h1 className="title-serif text-white text-5xl md:text-8xl mb-10 hero-title-fadeIn drop-shadow-sm">
-            Rita & Asociados
+          <h1 className="title-serif text-white-force text-5xl md:text-8xl mb-10 hero-title-fadeIn drop-shadow-md">
+            Ritta & Asociados
           </h1>
 
           <div className="search-pill mx-auto w-full max-w-[90%] md:max-w-none">
