@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import "./styles/main.css";
+import Footer from "./components/Footer";
+import Nav from "./components/nav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,8 +18,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "CHAPERO | Bienes Raíces de Lujo",
-  description: "Encuentra tu refugio con CHAPERO. Espacios seleccionados y diseñados para la luz y el confort.",
+  title: "Rita & Asociados",
+  description: "Exclusividad y transparencia en el mercado inmobiliario de alta gama. Encuentra tu próximo hogar con Rita & Asociados.",
 };
 
 export default function RootLayout({
@@ -26,8 +29,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={`${inter.variable} ${playfair.variable} font-sans bg-[#F5F4F0] text-[#33312E]`}>
+      <body className={`${inter.variable} ${playfair.variable}`}>
         {children}
+        <Footer />
       </body>
     </html>
   );

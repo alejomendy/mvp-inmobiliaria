@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { properties, getPropertyBySlug, formatPrice } from "@/lib/properties";
 import { notFound } from "next/navigation";
+import Nav from "../../components/nav";
+
+import Badge from "../../components/Badge";
 
 export async function generateStaticParams() {
   return properties.map((p) => ({ slug: p.slug }));
@@ -18,44 +21,13 @@ export default async function PropertyPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen bg-[#FAFAF7] text-[#3A3833] selection:bg-[#3A3833] selection:text-[#FAFAF7]">
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-[#FAFAF7]/80 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.03)] px-6 md:px-12 py-5 flex justify-between items-center w-full border-b border-black/5">
-        <Link
-          href="/"
-          className="font-serif text-3xl tracking-widest uppercase text-[#3A3833] drop-shadow-sm"
-        >
-          CHAPERO
-        </Link>
-        <nav className="hidden md:flex gap-12 text-xs tracking-[0.2em] uppercase font-semibold text-[#66615C]">
-          <Link
-            href="/#propiedades"
-            className="hover:text-[#3A3833] transition-colors relative group py-2"
-          >
-            Propiedades
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#3A3833] transition-all duration-300 group-hover:w-full" />
-          </Link>
-          <Link
-            href="/sobre-nosotros"
-            className="hover:text-[#3A3833] transition-colors relative group py-2"
-          >
-            Sobre Nosotros
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#3A3833] transition-all duration-300 group-hover:w-full" />
-          </Link>
-          <Link
-            href="/#contacto"
-            className="hover:text-[#3A3833] transition-colors relative group py-2"
-          >
-            Contacto
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#3A3833] transition-all duration-300 group-hover:w-full" />
-          </Link>
-        </nav>
-      </header>
+      <Nav />
 
       {/* Back link */}
-      <div className="px-6 md:px-12 pt-8 pb-2 max-w-[1400px] mx-auto">
+      <div className="section-container pt-8 pb-2">
         <Link
-          href="/#propiedades"
-          className="inline-flex items-center gap-2 font-sans text-xs tracking-widest uppercase text-[#8B9485] hover:text-[#3A3833] transition-colors font-bold group"
+          href="/propiedades"
+          className="inline-flex items-center gap-2 label-caps !text-[#8B9485] hover:!text-[#3A3833] transition-colors group"
         >
           <svg
             className="w-4 h-4 transition-transform group-hover:-translate-x-1"
@@ -75,10 +47,36 @@ export default async function PropertyPage({ params }: PageProps) {
       </div>
 
       {/* Hero Image Gallery */}
-      <section className="px-6 md:px-12 pt-6 pb-16 max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[70vh] min-h-[480px]">
+      <section className="section-container pt-6 pb-16">
+        {/* Mobile Carousel (Horizontal Scroll Snap) */}
+        <div className="flex md:hidden scroll-snap-x gap-4 pb-4">
+          {property.images.map((img, i) => (
+            <div
+              key={i}
+              className="relative w-[85vw] aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-[#F0EBE1] snap-center"
+            >
+              <Image
+                src={img}
+                fill
+                alt={`${property.title} - Vista ${i + 1}`}
+                className="object-cover"
+                priority={i === 0}
+                unoptimized
+              />
+              {/* Counter Pill */}
+              <div className="absolute bottom-6 right-6">
+                <span className="label-caps !text-[9px] bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full text-white">
+                  {i + 1} / {property.images.length}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Grid Layout */}
+        <div className="hidden md:grid grid-cols-3 gap-4 h-[70vh] min-h-[480px]">
           {/* Main large image */}
-          <div className="md:col-span-2 relative rounded-3xl overflow-hidden bg-[#F0EBE1]">
+          <div className="md:col-span-2 relative rounded-[3rem] overflow-hidden bg-[#F0EBE1]">
             <Image
               src={property.images[0]}
               fill
@@ -89,24 +87,16 @@ export default async function PropertyPage({ params }: PageProps) {
             />
             {/* Type Badge */}
             <div className="absolute top-6 left-6">
-              <span
-                className={`font-sans text-[10px] tracking-[0.2em] uppercase font-bold px-4 py-2 rounded-full backdrop-blur-sm ${
-                  property.type === "venta"
-                    ? "bg-[#3A3833] text-[#FAFAF7]"
-                    : "bg-[#8B9485] text-white"
-                }`}
-              >
-                {property.type === "venta" ? "En Venta" : "En Alquiler"}
-              </span>
+              <Badge type={property.type} />
             </div>
           </div>
 
           {/* Side small images */}
-          <div className="hidden md:flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {property.images.slice(1, 3).map((img, i) => (
               <div
                 key={i}
-                className="relative flex-1 rounded-3xl overflow-hidden bg-[#F0EBE1]"
+                className="relative flex-1 rounded-[2.5rem] overflow-hidden bg-[#F0EBE1]"
               >
                 <Image
                   src={img}
@@ -122,19 +112,19 @@ export default async function PropertyPage({ params }: PageProps) {
       </section>
 
       {/* Property Detail */}
-      <section className="px-6 md:px-12 pb-32 max-w-[1400px] mx-auto">
+      <section className="section-container pb-32">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-24">
           {/* Left: Main info */}
           <div className="lg:col-span-2">
             {/* Category tag */}
-            <span className="font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#8B9485] font-bold">
+            <span className="label-caps !text-[#8B9485]">
               {property.category.charAt(0).toUpperCase() +
                 property.category.slice(1)}{" "}
               · {property.neighborhood}
             </span>
 
             {/* Title */}
-            <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] mt-4 mb-6 text-[#3A3833]">
+            <h1 className="title-serif text-5xl md:text-7xl mt-4 mb-6">
               {property.title}
             </h1>
 
@@ -159,63 +149,63 @@ export default async function PropertyPage({ params }: PageProps) {
                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              <span className="font-sans text-sm font-semibold tracking-wide">
+              <span className="font-sans text-sm font-semibold tracking-wide uppercase text-[#3A3833]">
                 {property.location}
               </span>
             </div>
 
             {/* Stats Row */}
-            <div className="flex flex-wrap gap-8 mb-12 pb-12 border-b border-[#D2D6CB]/50">
+            <div className="flex flex-wrap gap-12 mb-12 pb-12 border-b border-[#D2D6CB]/50">
               <div className="flex flex-col gap-1">
-                <span className="font-sans text-[10px] tracking-widest uppercase text-[#8B9485] font-bold">
+                <span className="label-caps">
                   Dormitorios
                 </span>
-                <span className="font-serif text-4xl text-[#3A3833]">
+                <span className="title-serif text-4xl">
                   {property.bedrooms}
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-sans text-[10px] tracking-widest uppercase text-[#8B9485] font-bold">
+                <span className="label-caps">
                   Baños
                 </span>
-                <span className="font-serif text-4xl text-[#3A3833]">
+                <span className="title-serif text-4xl">
                   {property.bathrooms}
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <span className="font-sans text-[10px] tracking-widest uppercase text-[#8B9485] font-bold">
+                <span className="label-caps">
                   Superficie
                 </span>
-                <span className="font-serif text-4xl text-[#3A3833]">
+                <span className="title-serif text-4xl">
                   {property.area}
-                  <span className="text-xl text-[#8B9485]">m²</span>
+                  <span className="text-xl text-[#8B9485] ml-1">m²</span>
                 </span>
               </div>
             </div>
 
             {/* Description */}
             <div className="mb-12">
-              <h2 className="font-serif text-2xl md:text-3xl text-[#3A3833] mb-5">
+              <h2 className="title-serif text-3xl mb-5">
                 Sobre esta propiedad
               </h2>
-              <p className="font-sans text-sm md:text-base leading-relaxed text-[#66615C]">
+              <p className="text-sans-sm leading-relaxed">
                 {property.description}
               </p>
             </div>
 
             {/* Features */}
             <div>
-              <h2 className="font-serif text-2xl md:text-3xl text-[#3A3833] mb-6">
+              <h2 className="title-serif text-3xl mb-8">
                 Características
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {property.features.map((feat) => (
                   <div
                     key={feat}
-                    className="flex items-center gap-3 bg-white rounded-2xl px-5 py-4 border border-[#D2D6CB]/50"
+                    className="flex items-center gap-4 bg-white rounded-2xl px-6 py-4 border border-[#D2D6CB]/30 shadow-sm"
                   >
-                    <div className="w-2 h-2 rounded-full bg-[#8B9485] shrink-0" />
-                    <span className="font-sans text-sm text-[#3A3833]">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#8B9485] shrink-0" />
+                    <span className="text-sans-sm !text-[#3A3833]">
                       {feat}
                     </span>
                   </div>
@@ -226,18 +216,18 @@ export default async function PropertyPage({ params }: PageProps) {
 
           {/* Right: Price & Contact Card */}
           <div className="lg:col-span-1">
-            <div className="sticky top-28">
-              <div className="bg-white rounded-3xl p-8 border border-[#D2D6CB]/50 shadow-sm">
+            <div className="sticky top-32">
+              <div className="bg-white rounded-[3rem] p-8 md:p-10 border border-[#D2D6CB]/30 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
                 {/* Price */}
                 <div className="mb-8 pb-8 border-b border-[#D2D6CB]/50">
-                  <span className="font-sans text-[10px] tracking-widest uppercase text-[#8B9485] font-bold block mb-3">
+                  <span className="label-caps block mb-3">
                     Precio
                   </span>
-                  <div className="font-serif text-4xl text-[#3A3833]">
+                  <div className="title-serif text-4xl">
                     {formatPrice(property)}
                   </div>
                   {property.type === "alquiler" && (
-                    <span className="font-sans text-xs text-[#8B9485] mt-1 block">
+                    <span className="label-caps !text-[#8B9485] mt-2 block">
                       por mes
                     </span>
                   )}
@@ -249,51 +239,51 @@ export default async function PropertyPage({ params }: PageProps) {
                     href={`https://wa.me/5491100000000?text=Hola! Me interesa la propiedad: ${property.title} en ${property.location}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full bg-[#3A3833] text-white text-center rounded-full font-sans text-xs tracking-widest uppercase font-bold py-4 px-8 hover:bg-[#1A1917] transition-colors"
+                    className="btn-primary w-full text-center py-5"
                   >
                     Consultar por WhatsApp
                   </a>
                   <a
-                    href={`mailto:info@chaperinmobiliaria.com?subject=Consulta sobre ${property.title}&body=Hola, me interesa conocer más sobre la propiedad ${property.title} ubicada en ${property.location}.`}
-                    className="w-full border border-[#3A3833] text-[#3A3833] text-center rounded-full font-sans text-xs tracking-widest uppercase font-bold py-4 px-8 hover:bg-[#3A3833] hover:text-white transition-colors"
+                    href={`mailto:hola@ritayasociados.com?subject=Consulta sobre ${property.title}&body=Hola, me interesa conocer más sobre la propiedad ${property.title} ubicada en ${property.location}.`}
+                    className="btn-outline w-full text-center py-5"
                   >
                     Enviar Email
                   </a>
                 </div>
 
                 {/* Agent note */}
-                <p className="font-sans text-xs text-[#8B9485] text-center mt-6 leading-relaxed">
-                  Nuestro equipo te responde en menos de 24 horas hábiles.
+                <p className="label-caps !text-[#8B9485] !text-[9px] text-center mt-8 leading-relaxed normal-case font-medium">
+                  Nuestro equipo de asesores le responderá en menos de 24 horas hábiles.
                 </p>
               </div>
 
               {/* Mini details card */}
-              <div className="mt-4 bg-[#F0EBE1] rounded-3xl p-6">
-                <span className="font-sans text-[10px] tracking-widest uppercase text-[#8B9485] font-bold block mb-4">
-                  Referencia
+              <div className="mt-6 bg-[#F0EBE1] rounded-[2.5rem] p-8">
+                <span className="label-caps block mb-6">
+                  Referencia Técnica
                 </span>
-                <div className="flex flex-col gap-3">
+                <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="font-sans text-xs text-[#66615C]">
-                      ID de propiedad
+                    <span className="text-sans-sm !text-[12px]">
+                      ID Propiedad
                     </span>
-                    <span className="font-sans text-xs font-bold text-[#3A3833] uppercase tracking-wider">
-                      CHP-{property.id.padStart(4, "0")}
+                    <span className="label-caps !text-[#3A3833]">
+                      RYA-{property.id.padStart(4, "0")}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-sans text-xs text-[#66615C]">
+                  <div className="flex justify-between items-center border-t border-[#D2D6CB]/50 pt-4">
+                    <span className="text-sans-sm !text-[12px]">
                       Operación
                     </span>
-                    <span className="font-sans text-xs font-bold text-[#3A3833] uppercase tracking-wider">
+                    <span className="label-caps !text-[#3A3833]">
                       {property.type}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-sans text-xs text-[#66615C]">
+                  <div className="flex justify-between items-center border-t border-[#D2D6CB]/50 pt-4">
+                    <span className="text-sans-sm !text-[12px]">
                       Tipo
                     </span>
-                    <span className="font-sans text-xs font-bold text-[#3A3833] uppercase tracking-wider">
+                    <span className="label-caps !text-[#3A3833]">
                       {property.category}
                     </span>
                   </div>
@@ -303,21 +293,6 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="px-6 md:px-12 pt-16 pb-8 bg-[#F0EBE1] border-t border-[#D2D6CB]/50">
-        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <Link
-            href="/"
-            className="font-serif text-2xl tracking-widest uppercase text-[#3A3833]"
-          >
-            CHAPERO
-          </Link>
-          <span className="font-sans text-[10px] tracking-widest uppercase text-[#8B9485] font-bold">
-            © 2026 INMOBILIARIA CHAPERO. TODOS LOS DERECHOS RESERVADOS.
-          </span>
-        </div>
-      </footer>
     </main>
   );
 }
