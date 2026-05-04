@@ -1,13 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import { properties, getPropertyBySlug, formatPrice } from "@/lib/properties";
+import { getPropiedades, getPropiedadById, getConfiguracionSite } from "@/lib/api";
+import { formatPrice } from "@/lib/properties";
 import { notFound } from "next/navigation";
-import Nav from "../../components/nav";
-
 import Badge from "../../components/Badge";
 
 export async function generateStaticParams() {
-  return properties.map((p) => ({ slug: p.slug }));
+  try {
+    const properties = await getPropiedades();
+    if (properties.length === 0) return [{ slug: "placeholder" }];
+    return properties.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [{ slug: "placeholder" }];
+  }
 }
 
 interface PageProps {
@@ -16,12 +21,16 @@ interface PageProps {
 
 export default async function PropertyPage({ params }: PageProps) {
   const { slug } = await params;
-  const property = getPropertyBySlug(slug);
+  const [property, config] = await Promise.all([
+    getPropiedadById(slug),
+    getConfiguracionSite(),
+  ]);
   if (!property) notFound();
+
+  const whatsapp = config.whatsapp_numero || "543584153649";
 
   return (
     <main className="min-h-screen bg-[#FAFAF7] text-[#3A3833] selection:bg-[#3A3833] selection:text-[#FAFAF7]">
-      <Nav />
 
       {/* Back link */}
       <div className="section-container pt-8 pb-2">
@@ -223,7 +232,7 @@ export default async function PropertyPage({ params }: PageProps) {
                   <span className="label-caps block mb-3">
                     Precio
                   </span>
-                  <div className="title-serif text-4xl">
+                  <div className="title-serif text-4xl text-[#C9A96E]">
                     {formatPrice(property)}
                   </div>
                   {property.type === "alquiler" && (
@@ -236,7 +245,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 {/* CTA */}
                 <div className="flex flex-col gap-4">
                   <a
-                    href={`https://wa.me/5491100000000?text=Hola! Me interesa la propiedad: ${property.title} en ${property.location}`}
+                    href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hola! Me interesa la propiedad: ${property.title} en ${property.location}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary w-full text-center py-5"

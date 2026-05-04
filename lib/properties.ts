@@ -1,4 +1,4 @@
-export type PropertyType = "venta" | "alquiler";
+export type PropertyType = "venta" | "alquiler" | "alquiler_temporal";
 export type PropertyCategory = "casa" | "departamento" | "oficina" | "terreno";
 
 export interface Property {

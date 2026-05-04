@@ -10,6 +10,9 @@
   --color-accent: #8B9485;
   --color-accent-hover: #727A6C;
   --color-white: #FFFFFF;
+  --color-gold: #C9A96E;
+  --color-gold-light: #F0E6D0;
+  --color-gold-dark: #A8834A;
 }
 
 @theme {

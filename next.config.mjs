@@ -15,7 +15,19 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "placehold.co",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "inmobiliaria-backend-wi6o.onrender.com",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "http",
+        hostname: "inmobiliaria-backend.test",
+      },
     ],
   },
 };

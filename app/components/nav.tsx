@@ -1,18 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import WhatsAppButton from "./WhatsAppButton";
 
 export default function Nav() {
   return (
     <>
       <header className="glass-header">
-        {/* CSS-only Mobile Menu Toggle - Must be before elements that respond to peer-checked */}
         <input type="checkbox" id="mobile-menu" className="hidden peer/menu" />
         
         <div className="nav-container">
           <Link href="/" className="font-serif text-3xl tracking-widest uppercase text-[#3A3833] drop-shadow-sm relative z-50 flex items-center hover:opacity-80 transition-opacity">
             <Image
               src="/mvp-inmobiliaria/logo.png"
-              alt="Logo Rita & Asociados"
+              alt="Logo Ritta & Asociados"
               width={180}
               height={60}
               className="w-auto h-10 md:h-12 object-contain"
@@ -30,18 +30,18 @@ export default function Nav() {
           </label>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-12">
+          <nav className="hidden md:flex gap-12 items-center">
             <NavLink href="/propiedades">Propiedades</NavLink>
-            <NavLink href="/sobre-nosotros">Sobre Nosotros</NavLink>
-            <NavLink href="/contacto">Contacto</NavLink>
+            <NavLink href="/sobre-nosotros">Nosotros</NavLink>
+            <WhatsAppButton label="WhatsApp" variant="pill" />
           </nav>
         </div>
 
         {/* Mobile Navigation Dropdown */}
         <nav className="mobile-nav">
           <MobileNavLink href="/propiedades">Propiedades</MobileNavLink>
-          <MobileNavLink href="/sobre-nosotros">Sobre Nosotros</MobileNavLink>
-          <MobileNavLink href="/contacto">Contacto</MobileNavLink>
+          <MobileNavLink href="/sobre-nosotros">Nosotros</MobileNavLink>
+          <WhatsAppButton label="WhatsApp" variant="pill" className="!text-sm !px-6 !py-3" />
         </nav>
       </header>
     </>
