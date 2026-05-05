@@ -5,7 +5,7 @@ import PropiedadesContent from "./PropiedadesContent";
 export const metadata: Metadata = {
   title: "Propiedades",
   description:
-    "Explorá nuestro catálogo de propiedades en alquiler y venta en Río Cuarto. Casas, departamentos, terrenos y más con asesoramiento jurídico.",
+    "Explorá nuestro catálogo de propiedades en alquiler y venta en Adelia María. Casas, departamentos, terrenos y más con asesoramiento jurídico.",
 };
 
 export default function PropiedadesPage() {

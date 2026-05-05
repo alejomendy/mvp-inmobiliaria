@@ -5,7 +5,7 @@ import WhatsAppButton from "../components/WhatsAppButton";
 export const metadata: Metadata = {
   title: "Nosotros",
   description:
-    "Conocé Ritta & Asociados: estudio jurídico integral en Río Cuarto dedicado a propiedades en alquiler y venta, con asesoramiento personalizado.",
+    "Conocé Ritta & Asociados: estudio jurídico integral en Adelia María, Córdoba, dedicado a propiedades en alquiler y venta, con asesoramiento personalizado.",
 };
 
 export default function SobreNosotrosPage() {

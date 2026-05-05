@@ -23,15 +23,15 @@ export const metadata: Metadata = {
     template: "%s | Ritta & Asociados",
   },
   description:
-    "Ritta & Asociados: estudio jurídico integral con amplio catálogo de propiedades en alquiler y venta en Río Cuarto. Asesoramiento personalizado.",
-  keywords: ["inmobiliaria", "alquiler", "venta", "propiedades", "Río Cuarto", "Ritta & Asociados", "estudio jurídico"],
+    "Ritta & Asociados: estudio jurídico integral con amplio catálogo de propiedades en alquiler y venta en Adelia María. Asesoramiento personalizado.",
+  keywords: ["inmobiliaria", "alquiler", "venta", "propiedades", "Adelia María", "Ritta & Asociados", "estudio jurídico"],
   openGraph: {
     type: "website",
     locale: "es_AR",
     siteName: "Ritta & Asociados",
     title: "Ritta & Asociados | Estudio Jurídico Inmobiliario",
     description:
-      "Amplio catálogo de propiedades en alquiler y venta en Río Cuarto. Asesoramiento jurídico integral.",
+      "Amplio catálogo de propiedades en alquiler y venta en Adelia María. Asesoramiento jurídico integral.",
   },
 };
 

@@ -118,7 +118,7 @@ export default function ContactoPage() {
               <div>
                 <span className="label-caps !text-[#3A3833] block mb-3">Oficina</span>
                 <p className="text-sans-sm italic">
-                  Alfonsina Storni 105
+                  Alfonsina Storni 105<br />Adelia María, Córdoba (5843)
                 </p>
               </div>
               <div>

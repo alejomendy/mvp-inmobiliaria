@@ -25,7 +25,7 @@ export default async function Philosophy() {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <span className="font-sans text-sm font-semibold text-[#1C1814]">
-                  Alfonsina Storni 105, Río Cuarto
+                  Alfonsina Storni 105, Adelia María
                 </span>
               </div>
             </div>

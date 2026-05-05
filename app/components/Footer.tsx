@@ -19,7 +19,7 @@ export default function Footer() {
               Ritta &amp; Asociados
             </span>
             <p className="text-sm text-[#8B9485] mt-3 leading-relaxed max-w-xs">
-              Estudio jurídico integral especializado en derecho civil e inmobiliario. Río Cuarto, Córdoba.
+              Estudio jurídico integral especializado en derecho civil e inmobiliario. Adelia María, Córdoba.
             </p>
 
             {/* Social icons */}
@@ -102,7 +102,7 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[#C9A96E] shrink-0 mt-0.5" />
                 <span className="text-sm text-[#8B9485] leading-snug">
-                  Alfonsina Storni 105<br />Río Cuarto, Córdoba
+                  Alfonsina Storni 105<br />Adelia María, Córdoba (5843)
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -136,7 +136,7 @@ export default function Footer() {
             © 2026 Ritta &amp; Asociados · Todos los derechos reservados
           </span>
           <span className="label-caps !text-[#66615C]">
-            Río Cuarto · Córdoba · Argentina
+            Adelia María · Córdoba · Argentina (5843)
           </span>
         </div>
       </div>
