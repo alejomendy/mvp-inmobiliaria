@@ -43,10 +43,15 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           src={property.coverImage}
           fill
           alt={property.title}
-          className={`object-cover transition-transform duration-[1.5s] ${
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className={`object-cover object-center transition-transform duration-[1.5s] ${
             !isUnavailable ? "group-hover:scale-[1.04]" : ""
           }`}
           unoptimized
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              "https://placehold.co/600x450/F0EBE1/3A3833?text=Sin+Imagen";
+          }}
         />
         <EstadoOverlay estado={property.estado} />
         {/* Type badge */}

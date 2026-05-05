@@ -22,6 +22,8 @@ export interface Propiedad {
   habitaciones: number;
   banos: number;
   estado: EstadoPropiedad;
+  destacada?: boolean;
+  orden_destacado?: number | null;
   created_at: string;
   updated_at: string;
   imagenes?: string[];
@@ -40,6 +42,31 @@ export interface ConfiguracionSite {
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://inmobiliaria-backend-wi6o.onrender.com/api";
+
+// Cache client-side — solo activo en el browser, nunca en build time
+const _cache = new Map<string, { data: unknown; exp: number }>();
+
+async function getCached<T>(
+  key: string,
+  ttlMs: number,
+  fetcher: () => Promise<T>
+): Promise<T> {
+  if (typeof window !== "undefined") {
+    const hit = _cache.get(key);
+    if (hit && Date.now() < hit.exp) return hit.data as T;
+  }
+  const data = await fetcher();
+  if (typeof window !== "undefined") {
+    _cache.set(key, { data, exp: Date.now() + ttlMs });
+  }
+  return data;
+}
+
+function clearPropiedadesCache() {
+  for (const key of _cache.keys()) {
+    if (key.startsWith("prop:")) _cache.delete(key);
+  }
+}
 
 // Las imágenes que llegan del backend ya son URLs completas (https://...).
 // Esta función solo es fallback para casos donde llegue una ruta relativa.
@@ -84,7 +111,7 @@ export function mapPropiedadToProperty(p: Propiedad): Property {
     features: p.caracteristicas?.map((c) => c.nombre) || [],
     images: imagenesUrls,
     coverImage: imagenesUrls[0],
-    featured: false,
+    featured: p.destacada ?? false,
     createdAt: p.created_at,
     // Campos extra pasados directamente
     estado: p.estado,
@@ -100,30 +127,63 @@ export async function getPropiedades(filters?: {
   if (filters?.ciudad) queryParams.append("ciudad", filters.ciudad);
 
   const url = `${API_URL}/propiedades${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+  const cacheKey = `prop:list:${queryParams.toString()}`;
 
+  return getCached(cacheKey, 30_000, async () => {
+    try {
+      const response = await fetch(url, { next: { revalidate: 60 } });
+      if (!response.ok) return [];
+      const data: Propiedad[] = await response.json();
+      return data.map(mapPropiedadToProperty);
+    } catch (error) {
+      console.error("Error al obtener propiedades:", error);
+      return [];
+    }
+  });
+}
+
+export async function getPropiedadesDestacadas(): Promise<Property[]> {
+  return getCached("prop:destacadas", 30_000, async () => {
+    try {
+      const response = await fetch(`${API_URL}/propiedades?destacadas=true`, {
+        next: { revalidate: 60 },
+      });
+      if (!response.ok) return [];
+      const data: Propiedad[] = await response.json();
+      return data.map(mapPropiedadToProperty);
+    } catch {
+      return [];
+    }
+  });
+}
+
+export async function getCountDestacadas(): Promise<number> {
   try {
-    const response = await fetch(url, { next: { revalidate: 60 } });
-    if (!response.ok) return [];
+    const response = await fetch(`${API_URL}/propiedades?destacadas=true`, {
+      cache: "no-store",
+    });
+    if (!response.ok) return 0;
     const data: Propiedad[] = await response.json();
-    return data.map(mapPropiedadToProperty);
-  } catch (error) {
-    console.error("Error al obtener propiedades:", error);
-    return [];
+    return data.length;
+  } catch {
+    return 0;
   }
 }
 
 export async function getPropiedadById(id: string | number): Promise<Property | null> {
-  try {
-    const response = await fetch(`${API_URL}/propiedades/${id}`, {
-      next: { revalidate: 60 },
-    });
-    if (!response.ok) return null;
-    const data: Propiedad = await response.json();
-    return mapPropiedadToProperty(data);
-  } catch (error) {
-    console.error(`Error al obtener propiedad ${id}:`, error);
-    return null;
-  }
+  return getCached(`prop:${id}`, 60_000, async () => {
+    try {
+      const response = await fetch(`${API_URL}/propiedades/${id}`, {
+        next: { revalidate: 60 },
+      });
+      if (!response.ok) return null;
+      const data: Propiedad = await response.json();
+      return mapPropiedadToProperty(data);
+    } catch (error) {
+      console.error(`Error al obtener propiedad ${id}:`, error);
+      return null;
+    }
+  });
 }
 
 export async function createPropiedad(data: Partial<Propiedad>): Promise<Property | null> {
@@ -135,6 +195,7 @@ export async function createPropiedad(data: Partial<Propiedad>): Promise<Propert
     });
     if (!response.ok) return null;
     const result: Propiedad = await response.json();
+    clearPropiedadesCache();
     return mapPropiedadToProperty(result);
   } catch (error) {
     console.error("Error al crear propiedad:", error);
@@ -154,6 +215,7 @@ export async function updatePropiedad(
     });
     if (!response.ok) return null;
     const result: Propiedad = await response.json();
+    clearPropiedadesCache();
     return mapPropiedadToProperty(result);
   } catch (error) {
     console.error(`Error al actualizar propiedad ${id}:`, error);
@@ -166,6 +228,7 @@ export async function deletePropiedad(id: string | number): Promise<boolean> {
     const response = await fetch(`${API_URL}/propiedades/${id}`, {
       method: "DELETE",
     });
+    if (response.ok) clearPropiedadesCache();
     return response.ok;
   } catch (error) {
     console.error(`Error al eliminar propiedad ${id}:`, error);
@@ -199,14 +262,16 @@ export async function enviarContacto(data: ContactoPayload): Promise<{ success: 
 }
 
 export async function getCaracteristicas(): Promise<Caracteristica[]> {
-  try {
-    const response = await fetch(`${API_URL}/caracteristicas`);
-    if (!response.ok) return [];
-    return await response.json();
-  } catch (error) {
-    console.error("Error al obtener características:", error);
-    return [];
-  }
+  return getCached("caracteristicas", 86_400_000, async () => {
+    try {
+      const response = await fetch(`${API_URL}/caracteristicas`);
+      if (!response.ok) return [];
+      return await response.json();
+    } catch (error) {
+      console.error("Error al obtener características:", error);
+      return [];
+    }
+  });
 }
 
 export async function getConfiguracionSite(): Promise<ConfiguracionSite> {

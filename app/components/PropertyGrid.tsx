@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { getPropiedades } from "@/lib/api";
+import { getPropiedades, getPropiedadesDestacadas } from "@/lib/api";
 import Image from "next/image";
 import PropietarioBanner from "./PropietarioBanner";
 
 function GalleryCard({ property, className }: { property: any, className: string }) {
   return (
-    <Link 
+    <Link
       href={`/propiedades/${property.slug}`}
       className={`property-card-container group ${className}`}
     >
@@ -13,8 +13,10 @@ function GalleryCard({ property, className }: { property: any, className: string
         src={property.coverImage}
         alt={property.title}
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         className="property-card-image"
         unoptimized
+        style={{ objectPosition: "center top" }}
       />
       <div className="property-card-overlay" />
       <div className="property-card-content">
@@ -33,11 +35,11 @@ function GalleryCard({ property, className }: { property: any, className: string
 }
 
 export default async function PropertyGrid() {
-  const allProperties = await getPropiedades();
-  const homeProperties = allProperties.slice(0, 6);
+  // Usar destacadas si hay; si no, mostrar las 6 más recientes
+  const destacadas = await getPropiedadesDestacadas();
+  const source = destacadas.length > 0 ? destacadas : await getPropiedades();
+  const homeProperties = source.slice(0, 6);
 
-  // Pad the array with nulls if we don't have exactly 6
-  // so the layout doesn't crash on undefined indexes
   const items = Array(6).fill(null).map((_, i) => homeProperties[i]);
 
   return (
@@ -47,7 +49,9 @@ export default async function PropertyGrid() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-px bg-[#C9A96E]" />
-              <span className="label-caps !text-[#C9A96E]">Propiedades Disponibles</span>
+              <span className="label-caps !text-[#C9A96E]">
+                {destacadas.length > 0 ? "Propiedades Destacadas" : "Propiedades Disponibles"}
+              </span>
             </div>
             <h2 className="title-serif text-5xl md:text-7xl leading-none">
               Alquiler y Venta

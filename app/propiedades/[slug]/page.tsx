@@ -235,9 +235,9 @@ export default async function PropertyPage({ params }: PageProps) {
                   <div className="title-serif text-4xl text-[#C9A96E]">
                     {formatPrice(property)}
                   </div>
-                  {property.type === "alquiler" && (
+                  {(property.type === "alquiler" || property.type === "alquiler_temporal") && (
                     <span className="label-caps !text-[#8B9485] mt-2 block">
-                      por mes
+                      {property.type === "alquiler_temporal" ? "por estadía" : "por mes"}
                     </span>
                   )}
                 </div>

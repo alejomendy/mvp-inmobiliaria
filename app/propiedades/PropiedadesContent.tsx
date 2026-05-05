@@ -72,11 +72,10 @@ export default function PropiedadesContent() {
             <button
               key={value}
               onClick={() => handleFilter(value)}
-              className={`label-caps px-5 py-2.5 rounded-full transition-all ${
-                filter === value
-                  ? "bg-[#3A3833] text-white"
-                  : "border border-[#D2D6CB] text-[#66615C] hover:border-[#3A3833]"
-              }`}
+              className={`label-caps px-5 py-2.5 rounded-full transition-all ${filter === value
+                ? "bg-[#3A3833] text-white"
+                : "border border-[#D2D6CB] text-[#66615C] hover:border-[#3A3833]"
+                }`}
             >
               {label}
             </button>
@@ -84,7 +83,7 @@ export default function PropiedadesContent() {
         </div>
 
         {/* WhatsApp helper bar */}
-        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 bg-[#F0EBE1] rounded-2xl">
+        {/* <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 bg-[#F0EBE1] rounded-2xl">
           <p className="flex-1 font-sans text-sm text-[#3A3833]">
             Escribinos para agendar una cita así te asesoramos de manera personalizada.
           </p>
@@ -93,7 +92,7 @@ export default function PropiedadesContent() {
             label="Agendar cita por WhatsApp"
             variant="pill"
           />
-        </div>
+        </div> */}
       </section>
 
       {/* Thin divider */}
@@ -149,9 +148,9 @@ export default function PropiedadesContent() {
       </section>
 
       {/* Agendá una visita */}
-      <section className="section-container pb-16">
+      {/* <section className="section-container pb-16">
         <AgendaVisitaBanner />
-      </section>
+      </section> */}
 
       {/* Publicá tu propiedad */}
       <section className="section-container pb-24">

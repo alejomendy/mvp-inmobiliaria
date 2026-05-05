@@ -1,9 +1,6 @@
 import WhatsAppButton from "./WhatsAppButton";
+import MapaWrapper from "./MapaWrapper";
 import { getConfiguracionSite } from "@/lib/api";
-
-// Coordenadas de Alfonsina Storni 105, Río Cuarto, Córdoba, Argentina
-const MAP_EMBED =
-  "https://www.openstreetmap.org/export/embed.html?bbox=-64.35330,-33.12700,-64.34830,-33.12400&layer=mapnik&marker=-33.12550,-64.35080";
 
 export default async function Philosophy() {
   const config = await getConfiguracionSite();
@@ -16,23 +13,20 @@ export default async function Philosophy() {
 
           {/* Izquierda: Mapa de ubicación */}
           <div className="relative w-full aspect-square md:aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#F0EBE1] shadow-sm">
-            <iframe
-              src={MAP_EMBED}
-              width="100%"
-              height="100%"
-              style={{ border: 0, position: "absolute", inset: 0, width: "100%", height: "100%", filter: "sepia(15%) contrast(0.95) brightness(1.02)" }}
-              loading="lazy"
-              allowFullScreen
-              title="Ubicación Ritta & Asociados — Alfonsina Storni 105, Río Cuarto"
-            />
-            {/* Etiqueta de dirección */}
-            <div className="absolute bottom-5 left-5 right-5 z-10 pointer-events-none">
+            <MapaWrapper />
+
+            {/* Etiqueta de dirección flotante */}
+            <div className="absolute bottom-5 left-5 right-5 z-[1000] pointer-events-none">
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-5 py-3 shadow-md inline-flex items-center gap-3">
                 <svg className="w-4 h-4 text-[#C9A96E] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="font-sans text-sm font-semibold text-[#3A3833]">Alfonsina Storni 105, Río Cuarto</span>
+                <span className="font-sans text-sm font-semibold text-[#3A3833]">
+                  Alfonsina Storni 105, Río Cuarto
+                </span>
               </div>
             </div>
           </div>

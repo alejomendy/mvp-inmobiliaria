@@ -1,14 +1,38 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Caracteristica, getCaracteristicas } from "@/lib/api";
-import { X, Save, ArrowLeft, Loader2, Plus, Link as LinkIcon } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Caracteristica, getCaracteristicas, getCountDestacadas } from "@/lib/api";
+import {
+  X, Save, ArrowLeft, Loader2, Plus, Link as LinkIcon,
+  Upload, Star, GripVertical, ArrowUp,
+} from "lucide-react";
 import Link from "next/link";
 
 interface PropertyFormProps {
   initialData?: any;
   onSubmit: (data: any) => Promise<void>;
   isSubmitting: boolean;
+}
+
+const IMGBB_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+
+async function uploadToImgBB(file: File): Promise<string> {
+  const base64 = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve((reader.result as string).split(",")[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const form = new FormData();
+  form.append("key", IMGBB_KEY!);
+  form.append("image", base64);
+  form.append("name", file.name.replace(/\.[^.]+$/, ""));
+
+  const res = await fetch("https://api.imgbb.com/1/upload", { method: "POST", body: form });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.error?.message || "Error al subir imagen");
+  return json.data.url as string;
 }
 
 export default function PropertyForm({ initialData, onSubmit, isSubmitting }: PropertyFormProps) {
@@ -26,6 +50,7 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
     habitaciones: initialData?.bedrooms || "",
     banos: initialData?.bathrooms || "",
     estado: initialData?.estado || "disponible",
+    destacada: initialData?.featured ?? false,
   });
 
   const [selectedChars, setSelectedChars] = useState<number[]>([]);
@@ -33,12 +58,22 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
     initialData?.images?.filter((img: string) => !img.includes("placehold")) || []
   );
   const [urlInput, setUrlInput] = useState("");
+  const [uploading, setUploading] = useState<string[]>([]); // filenames uploading
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [isDraggingFile, setIsDraggingFile] = useState(false);
+  const [countDestacadas, setCountDestacadas] = useState(0);
+
   const urlInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    async function fetchChars() {
-      const chars = await getCaracteristicas();
+    async function load() {
+      const [chars, count] = await Promise.all([
+        getCaracteristicas(),
+        getCountDestacadas(),
+      ]);
       setAllCharacteristics(chars);
+      setCountDestacadas(count);
       if (initialData?.features) {
         const ids = chars
           .filter((c) => initialData.features.includes(c.nombre))
@@ -46,7 +81,7 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
         setSelectedChars(ids);
       }
     }
-    fetchChars();
+    load();
   }, [initialData]);
 
   const handleChange = (
@@ -66,13 +101,10 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
     const url = urlInput.trim();
     if (!url) return;
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
-      alert("Por favor ingresá una URL válida (debe comenzar con http:// o https://)");
+      alert("La URL debe comenzar con http:// o https://");
       return;
     }
-    if (images.includes(url)) {
-      alert("Esta imagen ya fue agregada.");
-      return;
-    }
+    if (images.includes(url)) return;
     setImages((prev) => [...prev, url]);
     setUrlInput("");
     urlInputRef.current?.focus();
@@ -85,6 +117,57 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
     }
   };
 
+  const handleFiles = useCallback(async (files: FileList | File[]) => {
+    if (!IMGBB_KEY) return;
+    setUploadError(null);
+    const arr = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (!arr.length) return;
+
+    setUploading((prev) => [...prev, ...arr.map((f) => f.name)]);
+    const results: string[] = [];
+
+    for (const file of arr) {
+      try {
+        const url = await uploadToImgBB(file);
+        results.push(url);
+      } catch (err: any) {
+        setUploadError(`Error subiendo "${file.name}": ${err.message}`);
+      }
+      setUploading((prev) => prev.filter((n) => n !== file.name));
+    }
+
+    if (results.length) {
+      setImages((prev) => [...prev, ...results]);
+    }
+  }, []);
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDraggingFile(false);
+      handleFiles(e.dataTransfer.files);
+    },
+    [handleFiles]
+  );
+
+  const moveToFirst = (idx: number) => {
+    setImages((prev) => {
+      const next = [...prev];
+      const [item] = next.splice(idx, 1);
+      next.unshift(item);
+      return next;
+    });
+  };
+
+  const removeImage = (idx: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  // Determinar si el toggle de destacada está disponible
+  const isAlreadyDestacada = initialData?.featured ?? false;
+  const slotsLibres = 7 - countDestacadas;
+  const puedeDestacar = isAlreadyDestacada || slotsLibres > 0;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({
@@ -93,6 +176,7 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
       metros_cuadrados: Number(formData.metros_cuadrados) || null,
       habitaciones: Number(formData.habitaciones) || null,
       banos: Number(formData.banos) || null,
+      destacada: formData.destacada,
       caracteristicas: selectedChars,
       imagenes: images,
     });
@@ -162,12 +246,7 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block label-caps text-[#8B9485] mb-1.5">Tipo de operación *</label>
-                <select
-                  name="tipo_operacion"
-                  value={formData.tipo_operacion}
-                  onChange={handleChange}
-                  className={selectClass}
-                >
+                <select name="tipo_operacion" value={formData.tipo_operacion} onChange={handleChange} className={selectClass}>
                   <option value="venta">Venta</option>
                   <option value="alquiler">Alquiler</option>
                   <option value="alquiler_temporal">Alquiler Temporal</option>
@@ -175,12 +254,7 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
               </div>
               <div>
                 <label className="block label-caps text-[#8B9485] mb-1.5">Tipo de propiedad *</label>
-                <select
-                  name="tipo_propiedad"
-                  value={formData.tipo_propiedad}
-                  onChange={handleChange}
-                  className={selectClass}
-                >
+                <select name="tipo_propiedad" value={formData.tipo_propiedad} onChange={handleChange} className={selectClass}>
                   <option value="casa">Casa</option>
                   <option value="depto">Departamento</option>
                   <option value="terreno">Terreno</option>
@@ -239,18 +313,75 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
 
           {/* Imágenes */}
           <section className="bg-white p-8 rounded-2xl border border-[#D2D6CB] shadow-sm space-y-5">
-            <h3 className="title-serif text-2xl border-b border-[#D2D6CB]/30 pb-4">Imágenes</h3>
+            <div className="flex items-center justify-between border-b border-[#D2D6CB]/30 pb-4">
+              <h3 className="title-serif text-2xl">Imágenes</h3>
+              <span className="label-caps text-[#8B9485] text-[10px]">
+                {images.length} {images.length === 1 ? "imagen" : "imágenes"}
+              </span>
+            </div>
 
+            {/* Upload zone */}
+            {IMGBB_KEY ? (
+              <div
+                onDragOver={(e) => { e.preventDefault(); setIsDraggingFile(true); }}
+                onDragLeave={() => setIsDraggingFile(false)}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+                className={`relative border-2 border-dashed rounded-xl py-8 text-center cursor-pointer transition-all ${
+                  isDraggingFile
+                    ? "border-[#C9A96E] bg-[#FDF8F0]"
+                    : "border-[#D2D6CB] hover:border-[#C9A96E]/50 hover:bg-[#FAFAF7]"
+                }`}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => e.target.files && handleFiles(e.target.files)}
+                />
+                <Upload className="mx-auto mb-2 text-[#C9A96E]" size={28} />
+                <p className="text-sm text-[#3A3833] font-medium">
+                  {isDraggingFile ? "Soltá para subir" : "Arrastrá fotos aquí o hacé click para seleccionarlas"}
+                </p>
+                <p className="text-[10px] text-[#8B9485] mt-1">
+                  JPG, PNG, WEBP — se suben automáticamente
+                </p>
+                {uploading.length > 0 && (
+                  <div className="mt-3 flex flex-wrap justify-center gap-2">
+                    {uploading.map((name) => (
+                      <span key={name} className="flex items-center gap-1.5 bg-[#F0EBE1] px-3 py-1 rounded-full text-[10px] text-[#66615C]">
+                        <Loader2 size={10} className="animate-spin" />
+                        {name.length > 20 ? name.slice(0, 20) + "…" : name}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 text-sm text-amber-800">
+                <p className="font-medium mb-1">Carga directa de archivos no configurada</p>
+                <p className="text-xs text-amber-700">
+                  Configurá <code className="bg-amber-100 px-1 rounded">NEXT_PUBLIC_IMGBB_API_KEY</code> en tus variables de entorno para habilitar la subida de fotos. Mientras tanto, usá URLs externas.
+                </p>
+              </div>
+            )}
+
+            {uploadError && (
+              <p className="text-xs text-red-500 flex items-center gap-1.5">
+                <X size={12} /> {uploadError}
+              </p>
+            )}
+
+            {/* URL manual */}
             <div>
               <label className="block label-caps text-[#8B9485] mb-1.5">
-                Agregar imagen por URL
+                O agregá imagen por URL
               </label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <LinkIcon
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B9485]"
-                    size={16}
-                  />
+                  <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B9485]" size={16} />
                   <input
                     ref={urlInputRef}
                     type="url"
@@ -270,39 +401,67 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
                   <Plus size={18} />
                 </button>
               </div>
-              <p className="text-[10px] text-[#8B9485] mt-1.5">
-                Pegá la URL de la imagen y presioná Enter o el botón +
-              </p>
             </div>
 
+            {/* Image grid */}
             {images.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {images.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="relative group aspect-video rounded-xl overflow-hidden bg-[#F5F4F0] border border-[#D2D6CB]/50"
-                  >
-                    <img src={img} className="w-full h-full object-cover" alt={`Imagen ${idx + 1}`} />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors" />
-                    <button
-                      type="button"
-                      onClick={() => setImages((prev) => prev.filter((_, i) => i !== idx))}
-                      className="absolute top-2 right-2 p-1.5 bg-white text-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-md hover:bg-red-50"
+              <>
+                <p className="text-[10px] text-[#8B9485]">
+                  La primera imagen es la portada. Hacé click en <ArrowUp size={10} className="inline" /> para moverla al inicio.
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {images.map((img, idx) => (
+                    <div
+                      key={idx}
+                      className="relative group aspect-[4/3] rounded-xl overflow-hidden bg-[#F5F4F0] border border-[#D2D6CB]/50"
                     >
-                      <X size={14} />
-                    </button>
-                    {idx === 0 && (
-                      <span className="absolute bottom-2 left-2 label-caps text-[9px] bg-black/50 text-white px-2 py-1 rounded-full">
-                        Principal
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
+                      <img
+                        src={img}
+                        className="w-full h-full object-cover object-center"
+                        alt={`Imagen ${idx + 1}`}
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            "https://placehold.co/400x300/F0EBE1/3A3833?text=Error";
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors" />
+
+                      {/* Controls */}
+                      <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {idx !== 0 && (
+                          <button
+                            type="button"
+                            onClick={() => moveToFirst(idx)}
+                            title="Hacer portada"
+                            className="p-1.5 bg-white text-[#C9A96E] rounded-full shadow-md hover:bg-[#FDF8F0]"
+                          >
+                            <ArrowUp size={13} />
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => removeImage(idx)}
+                          className="p-1.5 bg-white text-red-500 rounded-full shadow-md hover:bg-red-50"
+                        >
+                          <X size={13} />
+                        </button>
+                      </div>
+
+                      {/* Badges */}
+                      {idx === 0 && (
+                        <span className="absolute bottom-2 left-2 label-caps text-[9px] bg-[#C9A96E] text-white px-2 py-1 rounded-full">
+                          Portada
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
             ) : (
-              <div className="border-2 border-dashed border-[#D2D6CB] rounded-xl py-10 text-center text-[#8B9485]">
+              <div className="border-2 border-dashed border-[#D2D6CB] rounded-xl py-8 text-center text-[#8B9485]">
                 <LinkIcon className="mx-auto mb-2 opacity-40" size={24} />
-                <p className="text-sm">Agregá imágenes usando URLs</p>
+                <p className="text-sm">Sin imágenes todavía</p>
               </div>
             )}
           </section>
@@ -381,9 +540,7 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
 
           {/* Estado */}
           <section className="bg-white p-6 rounded-2xl border border-[#D2D6CB] shadow-sm space-y-3">
-            <h3 className="title-serif text-xl border-b border-[#D2D6CB]/30 pb-3">
-              Estado
-            </h3>
+            <h3 className="title-serif text-xl border-b border-[#D2D6CB]/30 pb-3">Estado</h3>
             <select
               name="estado"
               value={formData.estado}
@@ -398,6 +555,70 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
             <p className="text-[10px] text-[#8B9485]">
               Las propiedades no disponibles muestran un badge visual en el catálogo.
             </p>
+          </section>
+
+          {/* Destacar propiedad */}
+          <section className="bg-white p-6 rounded-2xl border border-[#D2D6CB] shadow-sm space-y-4">
+            <div className="flex items-center gap-2 border-b border-[#D2D6CB]/30 pb-3">
+              <Star size={16} className="text-[#C9A96E]" />
+              <h3 className="title-serif text-xl">Destacar</h3>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-[#3A3833] font-medium">Propiedad destacada</p>
+                <p className="text-[10px] text-[#8B9485] mt-0.5">
+                  Aparece en la portada del sitio
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={!puedeDestacar && !formData.destacada}
+                onClick={() => {
+                  if (!puedeDestacar && !formData.destacada) return;
+                  setFormData((prev) => ({ ...prev, destacada: !prev.destacada }));
+                }}
+                className={`relative w-12 h-6 rounded-full transition-colors ${
+                  formData.destacada ? "bg-[#C9A96E]" : "bg-[#D2D6CB]"
+                } ${!puedeDestacar && !formData.destacada ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
+              >
+                <span
+                  className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                    formData.destacada ? "left-7" : "left-1"
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Slots counter */}
+            <div className="bg-[#F5F4F0] rounded-xl px-4 py-3">
+              <div className="flex justify-between items-center mb-2">
+                <span className="label-caps text-[#8B9485] text-[9px]">Slots destacados</span>
+                <span className="label-caps text-[9px] text-[#3A3833]">
+                  {isAlreadyDestacada ? countDestacadas : Math.min(countDestacadas + (formData.destacada ? 1 : 0), 7)} / 7
+                </span>
+              </div>
+              <div className="flex gap-1">
+                {Array(7).fill(0).map((_, i) => {
+                  const usados = isAlreadyDestacada
+                    ? countDestacadas
+                    : Math.min(countDestacadas + (formData.destacada ? 1 : 0), 7);
+                  return (
+                    <div
+                      key={i}
+                      className={`h-1.5 flex-1 rounded-full ${
+                        i < usados ? "bg-[#C9A96E]" : "bg-[#D2D6CB]"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+              {!puedeDestacar && !formData.destacada && (
+                <p className="text-[10px] text-amber-600 mt-2">
+                  Límite alcanzado. Quitá el destacado de otra propiedad primero.
+                </p>
+              )}
+            </div>
           </section>
         </div>
       </div>

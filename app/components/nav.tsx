@@ -7,7 +7,7 @@ export default function Nav() {
     <>
       <header className="glass-header">
         <input type="checkbox" id="mobile-menu" className="hidden peer/menu" />
-        
+
         <div className="nav-container">
           <Link href="/" className="font-serif text-3xl tracking-widest uppercase text-[#3A3833] drop-shadow-sm relative z-50 flex items-center hover:opacity-80 transition-opacity">
             <Image
@@ -32,7 +32,7 @@ export default function Nav() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-12 items-center">
             <NavLink href="/propiedades">Propiedades</NavLink>
-            <NavLink href="/sobre-nosotros">Nosotros</NavLink>
+            {/* <NavLink href="/sobre-nosotros">Nosotros</NavLink> */}
             <WhatsAppButton label="WhatsApp" variant="pill" />
           </nav>
         </div>
