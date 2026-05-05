@@ -9,7 +9,10 @@ export default function Nav() {
         <input type="checkbox" id="mobile-menu" className="hidden peer/menu" />
 
         <div className="nav-container">
-          <Link href="/" className="font-serif text-3xl tracking-widest uppercase text-[#3A3833] drop-shadow-sm relative z-50 flex items-center hover:opacity-80 transition-opacity">
+          <Link
+            href="/"
+            className="relative z-50 flex items-center hover:opacity-85 transition-opacity"
+          >
             <Image
               src="/mvp-inmobiliaria/logo.png"
               alt="Logo Ritta & Asociados"
@@ -20,7 +23,10 @@ export default function Nav() {
           </Link>
 
           {/* Hamburger Icon */}
-          <label htmlFor="mobile-menu" className="md:hidden cursor-pointer relative z-[60] p-2 text-[#3A3833]">
+          <label
+            htmlFor="mobile-menu"
+            className="md:hidden cursor-pointer relative z-[60] p-2 text-[#3A3833]"
+          >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
@@ -32,7 +38,6 @@ export default function Nav() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-12 items-center">
             <NavLink href="/propiedades">Propiedades</NavLink>
-            {/* <NavLink href="/sobre-nosotros">Nosotros</NavLink> */}
             <WhatsAppButton label="WhatsApp" variant="pill" />
           </nav>
         </div>
@@ -52,14 +57,17 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <Link href={href} className="nav-link">
       {children}
-      <span className="nav-link-underline"></span>
+      <span className="nav-link-underline" />
     </Link>
   );
 }
 
 function MobileNavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="font-serif tracking-widest text-2xl uppercase text-[#3A3833] hover:opacity-60 transition-opacity">
+    <Link
+      href={href}
+      className="font-serif tracking-widest text-2xl uppercase text-[#3A3833] hover:text-[#C9A96E] transition-colors"
+    >
       {children}
     </Link>
   );

@@ -5,9 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Property } from "@/lib/properties";
 import { getPropiedades, TipoOperacion } from "@/lib/api";
 import PropertyCard from "../components/PropertyCard";
-import WhatsAppButton from "../components/WhatsAppButton";
 import PropietarioBanner from "../components/PropietarioBanner";
-import AgendaVisitaBanner from "../components/AgendaVisitaBanner";
 
 type FilterType = "todos" | "venta" | "alquiler" | "alquiler_temporal";
 
@@ -58,6 +56,10 @@ export default function PropiedadesContent() {
 
       {/* Page Header */}
       <section className="section-container pt-20 pb-16">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-12 h-px bg-[#C9A96E]" />
+          <span className="label-caps !text-[#C9A96E]">Catálogo</span>
+        </div>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <h1 className="title-serif text-5xl md:text-7xl">Propiedades</h1>
           <p className="text-sans-sm max-w-xs md:text-right">
@@ -65,34 +67,23 @@ export default function PropiedadesContent() {
           </p>
         </div>
 
-        {/* Filter pills */}
+        {/* Filter pills — activo en dorado */}
         <div className="mt-12 flex flex-wrap items-center gap-3">
           <span className="label-caps !text-[#8B9485]">Filtrar por:</span>
           {FILTERS.map(({ value, label }) => (
             <button
               key={value}
               onClick={() => handleFilter(value)}
-              className={`label-caps px-5 py-2.5 rounded-full transition-all ${filter === value
-                ? "bg-[#3A3833] text-white"
-                : "border border-[#D2D6CB] text-[#66615C] hover:border-[#3A3833]"
-                }`}
+              className={`label-caps px-5 py-2.5 rounded-full transition-all ${
+                filter === value
+                  ? "bg-[#C9A96E] text-[#1A1714] border border-[#C9A96E] shadow-sm"
+                  : "border border-[#D2D6CB] text-[#66615C] hover:border-[#C9A96E] hover:text-[#C9A96E]"
+              }`}
             >
               {label}
             </button>
           ))}
         </div>
-
-        {/* WhatsApp helper bar */}
-        {/* <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 bg-[#F0EBE1] rounded-2xl">
-          <p className="flex-1 font-sans text-sm text-[#3A3833]">
-            Escribinos para agendar una cita así te asesoramos de manera personalizada.
-          </p>
-          <WhatsAppButton
-            message="Quiero agendar una consulta por una propiedad."
-            label="Agendar cita por WhatsApp"
-            variant="pill"
-          />
-        </div> */}
       </section>
 
       {/* Thin divider */}
@@ -118,7 +109,7 @@ export default function PropiedadesContent() {
           </div>
         ) : error ? (
           <div className="text-center py-20 space-y-4">
-            <p className="title-serif text-2xl text-[#3A3833]">No se pudo cargar el catálogo</p>
+            <p className="title-serif text-2xl">No se pudo cargar el catálogo</p>
             <p className="text-sans-sm text-[#66615C]">Hubo un error de conexión. Por favor, intentá de nuevo.</p>
             <button onClick={() => loadProperties(filter)} className="btn-outline mt-4">
               Reintentar
@@ -132,7 +123,7 @@ export default function PropiedadesContent() {
           </div>
         ) : (
           <div className="text-center py-20 space-y-3">
-            <p className="title-serif text-2xl text-[#3A3833]">Sin propiedades disponibles</p>
+            <p className="title-serif text-2xl">Sin propiedades disponibles</p>
             <p className="text-sans-sm text-[#66615C]">
               {filter !== "todos"
                 ? "No hay propiedades con este filtro en este momento."
@@ -146,11 +137,6 @@ export default function PropiedadesContent() {
           </div>
         )}
       </section>
-
-      {/* Agendá una visita */}
-      {/* <section className="section-container pb-16">
-        <AgendaVisitaBanner />
-      </section> */}
 
       {/* Publicá tu propiedad */}
       <section className="section-container pb-24">

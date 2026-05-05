@@ -17,14 +17,14 @@ export default async function Philosophy() {
 
             {/* Etiqueta de dirección flotante */}
             <div className="absolute bottom-5 left-5 right-5 z-[1000] pointer-events-none">
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-5 py-3 shadow-md inline-flex items-center gap-3">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl px-5 py-3 shadow-md inline-flex items-center gap-3 border border-[#C9A96E]/20">
                 <svg className="w-4 h-4 text-[#C9A96E] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
                     d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="font-sans text-sm font-semibold text-[#3A3833]">
+                <span className="font-sans text-sm font-semibold text-[#1C1814]">
                   Alfonsina Storni 105, Río Cuarto
                 </span>
               </div>
@@ -34,8 +34,8 @@ export default async function Philosophy() {
           {/* Derecha: Contenido */}
           <div className="flex flex-col w-full max-w-md">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-[#C9A96E]" />
-              <span className="label-caps !text-[#C9A96E]">Sección Propiedades</span>
+              <div className="w-12 h-px bg-[#C9A96E]" />
+              <span className="label-caps !text-[#C9A96E]">Quiénes somos</span>
             </div>
             <h2 className="title-serif text-5xl md:text-6xl mb-6">
               {config.filosofia_titulo}
