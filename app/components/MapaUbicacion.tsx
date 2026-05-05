@@ -9,8 +9,22 @@ const ZOOM = 17;
 
 const GMAPS_URL = `https://www.google.com/maps/search/?api=1&query=${LAT},${LNG}`;
 
-// CSS del popup — se inyecta una sola vez en el documento
+// CSS del popup y fixes de rendering — se inyecta una sola vez en el documento
 const POPUP_STYLES = `
+  /* Fondo del contenedor igual al tile oscuro → gaps de 1px invisibles */
+  .leaflet-container {
+    background: #1a1917 !important;
+  }
+  /* Evita costuras entre tiles */
+  .leaflet-tile {
+    border-right: 1px solid transparent !important;
+    border-bottom: 1px solid transparent !important;
+  }
+  .leaflet-tile-container {
+    will-change: transform;
+  }
+
+  /* Popup de marca */
   .rya-popup .leaflet-popup-content-wrapper {
     background: #1C1814;
     border: 1px solid rgba(201,169,110,0.35);
