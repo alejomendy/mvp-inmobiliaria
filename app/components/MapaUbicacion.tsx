@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 
 // Coordenadas exactas: Alfonsina Storni 105, Adelia María, Córdoba, Argentina
-const LAT  = -33.6353664;
-const LNG  = -64.0264359;
+const LAT  = -33.63532400212576;
+const LNG  = -64.02385563579561;
 const ZOOM = 17;
 
 const GMAPS_URL = `https://www.google.com/maps/search/?api=1&query=${LAT},${LNG}`;
