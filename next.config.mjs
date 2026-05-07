@@ -1,12 +1,7 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production';
-
 const nextConfig = {
-  // output: export solo en build de producción — en dev no aplica para evitar
-  // el error de generateStaticParams con rutas dinámicas
-  ...(isProd ? { output: 'export' } : {}),
-  basePath: '/mvp-inmobiliaria',
-  assetPrefix: '/mvp-inmobiliaria',
+  // Sin output: 'export' — Vercel hostea Next.js nativamente con ISR.
+  // El export estático causaba problemas cuando el backend estaba dormido durante el build.
   trailingSlash: true,
   images: {
     unoptimized: true,

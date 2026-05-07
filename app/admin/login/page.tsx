@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-10">
           <Image
-            src="/mvp-inmobiliaria/logo.png"
+            src="/logo.png"
             alt="Ritta & Asociados"
             width={160}
             height={56}

@@ -10,9 +10,8 @@ export default function PropietarioBanner({ variant = "dark" }: PropietarioBanne
 
   return (
     <div
-      className={`rounded-[2.5rem] px-8 py-14 md:py-16 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden ${
-        isDark ? "bg-[#1C1814]" : "bg-[#F0EBE1]"
-      }`}
+      className={`rounded-[2.5rem] px-8 py-14 md:py-16 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden ${isDark ? "bg-[#1C1814]" : "bg-[#F0EBE1]"
+        }`}
     >
       {/* Decorative gold accent line */}
       <div className={`absolute top-0 left-0 right-0 h-px ${isDark ? "bg-gradient-to-r from-transparent via-[#C9A96E]/50 to-transparent" : "bg-gradient-to-r from-transparent via-[#C9A96E]/40 to-transparent"}`} />
@@ -22,7 +21,10 @@ export default function PropietarioBanner({ variant = "dark" }: PropietarioBanne
           <div className="w-6 h-px bg-[#C9A96E]" />
           <span className={`label-caps !text-[#C9A96E]`}>Para propietarios</span>
         </div>
-        <h3 className={`title-serif text-3xl md:text-5xl mb-4 ${isDark ? "text-[#FAFAF7]" : ""}`}>
+        <h3 
+          className="title-serif text-3xl md:text-5xl mb-4"
+          style={isDark ? { color: "#C9A96E" } : undefined}
+        >
           Publicá tu propiedad
         </h3>
         <p className={`font-sans text-sm leading-relaxed ${isDark ? "text-[#8B9485]" : "text-[#4A4744]"}`}>

@@ -148,6 +148,11 @@ export default function MapaUbicacion() {
         className: "rya-popup",
         maxWidth: 260,
       }).openPopup();
+    }).catch(() => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML =
+          '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8B9485;font-size:13px;font-family:sans-serif;">Mapa no disponible</div>';
+      }
     });
 
     return () => {

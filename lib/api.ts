@@ -27,7 +27,7 @@ export interface Propiedad {
   created_at: string;
   updated_at: string;
   imagenes?: string[];
-  caracteristicas?: Caracteristica[];
+  caracteristicas?: (Caracteristica | string)[];
 }
 
 export interface ConfiguracionSite {
@@ -130,9 +130,9 @@ export async function getPropiedades(filters?: {
   const url = `${API_URL}/propiedades${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
   const cacheKey = `prop:list:${queryParams.toString()}`;
 
-  return getCached(cacheKey, 30_000, async () => {
+  return getCached(cacheKey, 10_000, async () => {
     try {
-      const response = await fetch(url, { next: { revalidate: 60 } });
+      const response = await fetch(url, { next: { revalidate: 10 } });
       if (!response.ok) return [];
       const data: Propiedad[] = await response.json();
       return data.map(mapPropiedadToProperty);
@@ -144,10 +144,10 @@ export async function getPropiedades(filters?: {
 }
 
 export async function getPropiedadesDestacadas(): Promise<Property[]> {
-  return getCached("prop:destacadas", 30_000, async () => {
+  return getCached("prop:destacadas", 10_000, async () => {
     try {
       const response = await fetch(`${API_URL}/propiedades?destacadas=true`, {
-        next: { revalidate: 60 },
+        next: { revalidate: 10 },
       });
       if (!response.ok) return [];
       const data: Propiedad[] = await response.json();
@@ -172,10 +172,10 @@ export async function getCountDestacadas(): Promise<number> {
 }
 
 export async function getPropiedadById(id: string | number): Promise<Property | null> {
-  return getCached(`prop:${id}`, 60_000, async () => {
+  return getCached(`prop:${id}`, 30_000, async () => {
     try {
       const response = await fetch(`${API_URL}/propiedades/${id}`, {
-        next: { revalidate: 60 },
+        next: { revalidate: 30 },
       });
       if (!response.ok) return null;
       const data: Propiedad = await response.json();
@@ -285,7 +285,7 @@ export async function getConfiguracionSite(): Promise<ConfiguracionSite> {
     filosofia_texto:
       "Ritta & Asoc. es un estudio jurídico integral dedicado a una amplia variedad de ramas principalmente del derecho civil. En esta web vas a encontrar las propiedades en venta y alquiler disponibles. También vas a poder consultarnos para publicar tu propiedad.",
     filosofia_imagen: null,
-    whatsapp_numero: "543584153649",
+    whatsapp_numero: null,
   };
 
   try {

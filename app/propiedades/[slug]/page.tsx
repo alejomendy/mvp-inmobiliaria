@@ -1,9 +1,54 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getPropiedades, getPropiedadById, getConfiguracionSite } from "@/lib/api";
 import { formatPrice } from "@/lib/properties";
 import { notFound } from "next/navigation";
 import PropertyGallery from "../../components/PropertyGallery";
 import Badge from "../../components/Badge";
+import WhatsAppButton from "../../components/WhatsAppButton";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rittayasociados.com.ar";
+
+// Rutas no incluidas en generateStaticParams se renderizan on-demand en Vercel
+export const dynamicParams = true;
+
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const property = await getPropiedadById(slug);
+  if (!property) return { title: "Propiedad no encontrada" };
+
+  const title = `${property.title} — Ritta & Asociados`;
+  const description = property.description
+    ? property.description.slice(0, 160)
+    : `${property.category} en ${property.neighborhood}. Consultá disponibilidad.`;
+  const image = property.coverImage;
+  const url = `${SITE_URL}/propiedades/${slug}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "website",
+      images: [{ url: image, width: 1200, height: 800, alt: property.title }],
+      siteName: "Ritta & Asociados",
+      locale: "es_AR",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+    alternates: { canonical: url },
+  };
+}
 
 export async function generateStaticParams() {
   try {
@@ -15,10 +60,6 @@ export async function generateStaticParams() {
   }
 }
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
-
 export default async function PropertyPage({ params }: PageProps) {
   const { slug } = await params;
   const [property, config] = await Promise.all([
@@ -27,7 +68,7 @@ export default async function PropertyPage({ params }: PageProps) {
   ]);
   if (!property) notFound();
 
-  const whatsapp = config.whatsapp_numero || "543584153649";
+  const whatsapp = config.whatsapp_numero || undefined;
 
   return (
     <main className="min-h-screen bg-[#FAFAF7] text-[#1C1814] selection:bg-[#C9A96E] selection:text-[#1A1714]">
@@ -179,20 +220,13 @@ export default async function PropertyPage({ params }: PageProps) {
 
                 {/* CTA */}
                 <div className="flex flex-col gap-4">
-                  <a
-                    href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(`Hola! Me interesa la propiedad: ${property.title} en ${property.location}`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary w-full text-center py-5"
-                  >
-                    Consultar por WhatsApp
-                  </a>
-                  {/* <a
-                    href={`mailto:estudiorittayasociados@gmail.com?subject=Consulta sobre ${property.title}&body=Hola, me interesa conocer más sobre la propiedad ${property.title} ubicada en ${property.location}.`}
-                    className="btn-outline w-full text-center py-5"
-                  >
-                    Enviar Email
-                  </a> */}
+                  <WhatsAppButton
+                    message={`Hola! Me interesa la propiedad: ${property.title} en ${property.location}`}
+                    label="Consultar por WhatsApp"
+                    variant="full"
+                    phoneNumber={whatsapp}
+                    className="!bg-[#C9A96E] hover:!bg-[#A8834A] !text-[#1A1714] shadow-[0_2px_8px_rgba(201,169,110,0.25)]"
+                  />
                 </div>
 
                 <p className="label-caps !text-[#8B9485] !text-[9px] text-center mt-8 leading-relaxed normal-case font-medium">

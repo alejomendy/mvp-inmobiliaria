@@ -10,7 +10,7 @@ export default async function Hero() {
   const config = await getConfiguracionSite();
 
   const heroImagen = config.hero_imagen || HERO_FALLBACK;
-  const whatsapp = config.whatsapp_numero || "543584153649";
+  const whatsapp = config.whatsapp_numero || "";
 
   return (
     <section className="px-4 md:px-12 pb-16 pt-8 bg-[#FAFAF7]">
@@ -20,7 +20,7 @@ export default async function Hero() {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <Image
-            src="/mvp-inmobiliaria/logo.png"
+            src="/logo.png"
             alt="Logo Ritta & Asociados"
             width={200}
             height={80}

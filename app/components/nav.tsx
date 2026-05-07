@@ -19,7 +19,7 @@ export default function Nav() {
             className="relative z-50 flex items-center hover:opacity-85 transition-opacity"
           >
             <Image
-              src="/mvp-inmobiliaria/logo.png"
+              src="/logo.png"
               alt="Logo Ritta & Asociados"
               width={180}
               height={60}
