@@ -25,13 +25,13 @@ export default function WhatsAppButton({
   phoneNumber,
 }: WhatsAppButtonProps) {
   const base =
-    "inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold tracking-widest uppercase transition-colors hover:bg-[#1da851]";
+    "inline-flex items-center justify-center gap-2 bg-wa text-white font-bold tracking-widest uppercase transition-colors hover:bg-wa-dark";
 
   const variants: Record<string, string> = {
     pill: "text-[10px] md:text-xs px-6 py-3.5 rounded-full shadow-sm",
     full: "text-xs px-10 py-5 rounded-full shadow-lg w-full",
     ghost:
-      "text-[10px] text-white/90 hover:!bg-transparent hover:text-white bg-transparent !shadow-none",
+      "text-[10px] text-white/90 !bg-transparent hover:!bg-transparent hover:!text-white !shadow-none",
   };
 
   return (

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function SobreNosotrosPage() {
   return (
-    <main className="bg-[#FAFAF7] min-h-screen">
+    <main className="bg-surface min-h-screen">
 
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden">
@@ -54,7 +54,7 @@ export default function SobreNosotrosPage() {
                 className="!px-7 !py-4 shadow-md"
               />
             </div>
-            <div className="relative aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
+            <div className="relative aspect-square rounded-card-lg overflow-hidden shadow-2xl">
               <Image
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80"
                 alt="Ritta & Asociados"
@@ -109,8 +109,8 @@ function ValueCard({
 }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="w-16 h-16 bg-[#F0EBE1] rounded-full flex items-center justify-center mb-6">
-        <svg className="w-8 h-8 text-[#3A3833]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="w-16 h-16 bg-surface-warm rounded-full flex items-center justify-center mb-6">
+        <svg className="w-8 h-8 text-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           {icon}
         </svg>
       </div>

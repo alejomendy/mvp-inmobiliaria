@@ -45,8 +45,8 @@ export default async function PropertyGrid() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-px bg-[#C9A96E]" />
-              <span className="label-caps !text-[#C9A96E]">
+              <div className="w-8 h-px bg-gold" />
+              <span className="label-caps !text-gold">
                 {destacadas.length > 0 ? "Propiedades Destacadas" : "Propiedades Disponibles"}
               </span>
             </div>

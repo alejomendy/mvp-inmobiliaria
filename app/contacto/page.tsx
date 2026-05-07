@@ -83,7 +83,7 @@ export default function ContactoPage() {
   };
 
   return (
-    <main className="bg-[#FAFAF7] min-h-screen">
+    <main className="bg-surface min-h-screen">
 
       <section className="section-container pt-20 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
@@ -116,13 +116,13 @@ export default function ContactoPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12">
               <div>
-                <span className="label-caps !text-[#3A3833] block mb-3">Oficina</span>
+                <span className="label-caps !text-charcoal block mb-3">Oficina</span>
                 <p className="text-sans-sm italic">
                   Alfonsina Storni 105<br />Adelia María, Córdoba (5843)
                 </p>
               </div>
               <div>
-                <span className="label-caps !text-[#3A3833] block mb-3">Datos de contacto</span>
+                <span className="label-caps !text-charcoal block mb-3">Datos de contacto</span>
                 <p className="text-sans-sm">
                   WP: 3584 153649<br />
                   estudiorittayasociados@gmail.com
@@ -131,7 +131,7 @@ export default function ContactoPage() {
                   href="https://www.instagram.com/rittayasociados"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sans-sm text-[#66615C] hover:text-[#3A3833] transition-colors mt-2 inline-block"
+                  className="text-sans-sm text-warm hover:text-charcoal transition-colors mt-2 inline-block"
                 >
                   @rittayasociados
                 </a>
@@ -140,14 +140,14 @@ export default function ContactoPage() {
           </div>
 
           {/* Right: Form */}
-          <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-[0_30px_80px_rgba(0,0,0,0.03)] border border-[#D2D6CB]/20">
+          <div className="bg-white p-8 md:p-12 rounded-card-lg shadow-[0_30px_80px_rgba(0,0,0,0.03)] border border-line/20">
 
             {formState === "success" ? (
               <div className="flex flex-col items-center justify-center py-12 text-center gap-6">
-                <CheckCircle className="text-[#8B9485]" size={56} strokeWidth={1.5} />
+                <CheckCircle className="text-muted" size={56} strokeWidth={1.5} />
                 <div>
                   <h3 className="title-serif text-3xl mb-3">¡Mensaje enviado!</h3>
-                  <p className="text-sans-sm text-[#66615C] max-w-sm">
+                  <p className="text-sans-sm text-warm max-w-sm">
                     Recibimos tu consulta. Te responderemos dentro de las próximas 24 horas hábiles.
                   </p>
                 </div>
@@ -186,12 +186,12 @@ export default function ContactoPage() {
                     error={fieldErrors.email}
                   />
                   <div className="space-y-1.5">
-                    <label className="label-caps !text-[#3A3833] !text-[10px]">Asunto</label>
+                    <label className="label-caps !text-charcoal !text-[10px]">Asunto</label>
                     <select
                       name="asunto"
                       value={form.asunto}
                       onChange={handleChange}
-                      className="w-full bg-transparent border-b border-[#D2D6CB]/60 py-3 outline-none focus:border-[#3A3833] transition-colors font-sans text-sm appearance-none cursor-pointer"
+                      className="w-full bg-transparent border-b border-line/60 py-3 outline-none focus:border-charcoal transition-colors font-sans text-sm appearance-none cursor-pointer"
                     >
                       {ASUNTOS.map((a) => (
                         <option key={a} value={a}>{a}</option>
@@ -199,14 +199,14 @@ export default function ContactoPage() {
                     </select>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="label-caps !text-[#3A3833] !text-[10px]">Mensaje</label>
+                    <label className="label-caps !text-charcoal !text-[10px]">Mensaje</label>
                     <textarea
                       name="mensaje"
                       rows={4}
                       value={form.mensaje}
                       onChange={handleChange}
                       className={`w-full bg-transparent border-b py-3 outline-none transition-colors font-sans text-sm resize-none ${
-                        fieldErrors.mensaje ? "border-red-400" : "border-[#D2D6CB]/60 focus:border-[#3A3833]"
+                        fieldErrors.mensaje ? "border-red-400" : "border-line/60 focus:border-charcoal"
                       }`}
                       placeholder="Contanos en qué podemos ayudarte..."
                     />
@@ -237,7 +237,7 @@ export default function ContactoPage() {
 
       {/* Office Photo */}
       <section className="section-container pb-24">
-        <div className="relative h-[450px] rounded-[3rem] overflow-hidden shadow-sm">
+        <div className="relative h-[450px] rounded-card-lg overflow-hidden shadow-sm">
           <Image
             src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2000&q=80"
             alt="Ritta & Asociados Oficina"
@@ -245,7 +245,7 @@ export default function ContactoPage() {
             className="object-cover hover:scale-[1.03] transition-transform duration-[3s]"
             unoptimized
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#3A3833]/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/20 to-transparent" />
         </div>
       </section>
     </main>
@@ -271,14 +271,14 @@ function FormField({
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="label-caps !text-[#3A3833] !text-[10px]">{label}</label>
+      <label className="label-caps !text-charcoal !text-[10px]">{label}</label>
       <input
         type={type}
         name={name}
         value={value}
         onChange={onChange}
         className={`w-full bg-transparent border-b py-3 outline-none transition-colors font-sans text-sm ${
-          error ? "border-red-400" : "border-[#D2D6CB]/60 focus:border-[#3A3833]"
+          error ? "border-red-400" : "border-line/60 focus:border-charcoal"
         }`}
         placeholder={placeholder}
       />

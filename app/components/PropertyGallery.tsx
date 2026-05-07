@@ -14,9 +14,8 @@ export default function PropertyGallery({ images, title }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Imagen principal — tamaño fijo, imagen se adapta al contenedor */}
-      <div className="relative w-full rounded-[2.5rem] overflow-hidden bg-[#F0EBE1] aspect-[4/3]">
-        {/* key={selected} fuerza remount al cambiar imagen */}
+      {/* Imagen principal */}
+      <div className="relative w-full rounded-card-md overflow-hidden bg-surface-warm aspect-[4/3]">
         <PropertyImageFill
           key={selected}
           src={list[selected]}
@@ -59,9 +58,9 @@ export default function PropertyGallery({ images, title }: Props) {
             <button
               key={i}
               onClick={() => setSelected(i)}
-              className={`relative shrink-0 w-20 h-14 rounded-xl overflow-hidden bg-[#F0EBE1] transition-all ${
+              className={`relative shrink-0 w-20 h-14 rounded-xl overflow-hidden bg-surface-warm transition-all ${
                 selected === i
-                  ? "ring-2 ring-[#C9A96E] opacity-100"
+                  ? "ring-2 ring-gold opacity-100"
                   : "opacity-50 hover:opacity-80"
               }`}
               aria-label={`Ver imagen ${i + 1}`}

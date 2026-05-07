@@ -3,7 +3,7 @@ import Philosophy from "./components/Philosophy";
 import PropertyGrid from "./components/PropertyGrid";
 export default function Home() {
   return (
-    <main className="bg-[#FAFAF7] min-h-screen">
+    <main className="bg-surface min-h-screen">
       <Hero />
       <Philosophy />
       <PropertyGrid />

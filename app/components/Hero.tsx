@@ -13,7 +13,7 @@ export default async function Hero() {
   const whatsapp = config.whatsapp_numero || "";
 
   return (
-    <section className="px-4 md:px-12 pb-16 pt-8 bg-[#FAFAF7]">
+    <section className="px-4 md:px-12 pb-16 pt-8 bg-surface">
       <div className="hero-container group">
         <HeroImage src={heroImagen} />
         <div className="hero-overlay" />
@@ -31,18 +31,18 @@ export default async function Hero() {
             {config.hero_titulo}
           </h1>
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-px bg-[#C9A96E]/70" />
+            <div className="w-12 h-px bg-gold/70" />
             <p className="text-white/90 font-serif text-lg md:text-2xl tracking-wide drop-shadow-sm italic">
               {config.hero_subtitulo}
             </p>
-            <div className="w-12 h-px bg-[#C9A96E]/70" />
+            <div className="w-12 h-px bg-gold/70" />
           </div>
           <div className="mb-6" />
 
           <div className="flex flex-col sm:flex-row gap-3 mb-10 w-full max-w-sm sm:max-w-none justify-center">
             <Link
               href="/propiedades?tipo=venta"
-              className="bg-[#C9A96E] text-[#1A1714] font-bold text-xs tracking-widest uppercase px-8 py-4 rounded-full hover:bg-[#B8956A] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+              className="bg-gold text-ink font-bold text-xs tracking-widest uppercase px-8 py-4 rounded-full hover:bg-gold-dark transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
               Propiedades en Venta
             </Link>

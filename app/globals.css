@@ -1,29 +1,49 @@
 @import "tailwindcss";
 
-:root {
-  --color-bg-primary: #FAFAF7;
-  --color-bg-secondary: #F5F4F0;
-  --color-bg-accent: #F0EBE1;
-  --color-text-primary: #3A3833;
-  --color-text-secondary: #66615C;
-  --color-text-muted: #8B9485;
-  --color-accent: #8B9485;
-  --color-accent-hover: #727A6C;
-  --color-white: #FFFFFF;
-  --color-gold: #C9A96E;
-  --color-gold-light: #F0E6D0;
-  --color-gold-dark: #A8834A;
-}
-
+/* ─── Design Tokens ──────────────────────────────────────────────────────────
+   Fuente única de verdad para colores, radios y tipografía.
+   En componentes usar: text-gold, bg-surface, rounded-card, etc.
+   ─────────────────────────────────────────────────────────────────────────── */
 @theme {
-  --font-sans: "var(--font-inter)", sans-serif;
-  --font-serif: "var(--font-playfair)", serif;
+  /* Fonts */
+  --font-sans:  var(--font-inter), sans-serif;
+  --font-serif: var(--font-playfair), serif;
+
+  /* Brand colors */
+  --color-gold:       #C9A96E;   /* acento dorado principal */
+  --color-gold-dark:  #A8834A;   /* hover/active del dorado */
+  --color-gold-light: #F0E6D0;   /* tinte dorado suave */
+
+  /* Text */
+  --color-ink:      #1C1814;   /* títulos, color más oscuro */
+  --color-charcoal: #3A3833;   /* texto body principal */
+  --color-warm:     #66615C;   /* texto secundario */
+  --color-muted:    #8B9485;   /* texto silenciado, placeholders */
+  --color-sage:     #7A7060;   /* etiquetas, labels */
+
+  /* Surfaces */
+  --color-surface:      #FAFAF7;   /* fondo de página */
+  --color-surface-alt:  #F5F4F0;   /* fondo secundario */
+  --color-surface-warm: #F0EBE1;   /* fondo cálido, cards de imagen */
+
+  /* Borders */
+  --color-line: #D2D6CB;   /* bordes y divisores */
+
+  /* WhatsApp */
+  --color-wa:      #25D366;
+  --color-wa-dark: #1da851;
+
+  /* Border radius — escala de cards */
+  --radius-card-sm: 1.5rem;    /* 24px — pills y chips */
+  --radius-card:    2rem;      /* 32px — cards estándar */
+  --radius-card-md: 2.5rem;    /* 40px — cards grandes */
+  --radius-card-lg: 3rem;      /* 48px — contenedores hero */
 }
 
 @layer base {
   body {
-    background-color: var(--color-bg-secondary);
-    color: var(--color-text-primary);
+    background-color: var(--color-surface-alt);
+    color: var(--color-charcoal);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

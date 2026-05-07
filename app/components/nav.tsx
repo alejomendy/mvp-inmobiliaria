@@ -30,7 +30,7 @@ export default function Nav() {
           {/* Hamburger Icon */}
           <label
             htmlFor="mobile-menu"
-            className="md:hidden cursor-pointer relative z-[60] p-2 text-[#3A3833]"
+            className="md:hidden cursor-pointer relative z-[60] p-2 text-charcoal"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16m-7 6h7" />
@@ -71,7 +71,7 @@ function MobileNavLink({ href, children }: { href: string; children: React.React
   return (
     <Link
       href={href}
-      className="font-serif tracking-widest text-2xl uppercase text-[#3A3833] hover:text-[#C9A96E] transition-colors"
+      className="font-serif tracking-widest text-2xl uppercase text-charcoal hover:text-gold transition-colors"
     >
       {children}
     </Link>

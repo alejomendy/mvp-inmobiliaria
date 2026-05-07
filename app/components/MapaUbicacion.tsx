@@ -171,7 +171,7 @@ export default function MapaUbicacion() {
         href={GMAPS_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-5 right-5 z-[1000] inline-flex items-center gap-2 bg-[#C9A96E] text-[#1A1714] font-bold tracking-widest uppercase text-[10px] px-4 py-2.5 rounded-full shadow-lg hover:bg-[#A8834A] transition-colors"
+        className="absolute bottom-5 right-5 z-[1000] inline-flex items-center gap-2 bg-gold text-ink font-bold tracking-widest uppercase text-[10px] px-4 py-2.5 rounded-full shadow-lg hover:bg-gold-dark transition-colors"
       >
         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

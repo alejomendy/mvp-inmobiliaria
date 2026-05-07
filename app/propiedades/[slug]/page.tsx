@@ -71,13 +71,13 @@ export default async function PropertyPage({ params }: PageProps) {
   const whatsapp = config.whatsapp_numero || undefined;
 
   return (
-    <main className="min-h-screen bg-[#FAFAF7] text-[#1C1814] selection:bg-[#C9A96E] selection:text-[#1A1714]">
+    <main className="min-h-screen bg-surface text-ink selection:bg-gold selection:text-ink">
 
       {/* Back link */}
       <div className="section-container pt-8 pb-2">
         <Link
           href="/propiedades"
-          className="inline-flex items-center gap-2 label-caps !text-[#8B9485] hover:!text-[#C9A96E] transition-colors group"
+          className="inline-flex items-center gap-2 label-caps !text-muted hover:!text-gold transition-colors group"
         >
           <svg
             className="w-4 h-4 transition-transform group-hover:-translate-x-1"
@@ -107,8 +107,8 @@ export default async function PropertyPage({ params }: PageProps) {
           <div className="lg:col-span-2">
             {/* Category tag */}
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-px bg-[#C9A96E]" />
-              <span className="label-caps !text-[#C9A96E]">
+              <div className="w-8 h-px bg-gold" />
+              <span className="label-caps !text-gold">
                 {property.category.charAt(0).toUpperCase() + property.category.slice(1)}{" "}
                 · {property.neighborhood}
               </span>
@@ -120,39 +120,39 @@ export default async function PropertyPage({ params }: PageProps) {
             </h1>
 
             {/* Location */}
-            <div className="flex items-center gap-2 text-[#8B9485] mb-10">
-              <svg className="w-4 h-4 shrink-0 text-[#C9A96E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center gap-2 text-muted mb-10">
+              <svg className="w-4 h-4 shrink-0 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
                   d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <span className="font-sans text-sm font-semibold tracking-wide uppercase text-[#66615C]">
+              <span className="font-sans text-sm font-semibold tracking-wide uppercase text-warm">
                 {property.location}
               </span>
             </div>
 
             {/* Stats Row */}
             {(property.bedrooms > 0 || property.bathrooms > 0 || property.area > 0) && (
-              <div className="flex flex-wrap gap-12 mb-12 pb-12 border-b border-[#D2D6CB]/50">
+              <div className="flex flex-wrap gap-12 mb-12 pb-12 border-b border-line/50">
                 {property.bedrooms > 0 && (
                   <div className="flex flex-col gap-1">
-                    <span className="label-caps !text-[#C9A96E]">Dormitorios</span>
+                    <span className="label-caps !text-gold">Dormitorios</span>
                     <span className="title-serif text-4xl">{property.bedrooms}</span>
                   </div>
                 )}
                 {property.bathrooms > 0 && (
                   <div className="flex flex-col gap-1">
-                    <span className="label-caps !text-[#C9A96E]">Baños</span>
+                    <span className="label-caps !text-gold">Baños</span>
                     <span className="title-serif text-4xl">{property.bathrooms}</span>
                   </div>
                 )}
                 {property.area > 0 && (
                   <div className="flex flex-col gap-1">
-                    <span className="label-caps !text-[#C9A96E]">Superficie</span>
+                    <span className="label-caps !text-gold">Superficie</span>
                     <span className="title-serif text-4xl">
                       {property.area}
-                      <span className="text-xl text-[#8B9485] ml-1">m²</span>
+                      <span className="text-xl text-muted ml-1">m²</span>
                     </span>
                   </div>
                 )}
@@ -175,10 +175,10 @@ export default async function PropertyPage({ params }: PageProps) {
                   {property.features.map((feat) => (
                     <div
                       key={feat}
-                      className="flex items-center gap-4 bg-white rounded-2xl px-6 py-4 border border-[#D2D6CB]/30 shadow-sm hover:border-[#C9A96E]/30 transition-colors"
+                      className="flex items-center gap-4 bg-white rounded-2xl px-6 py-4 border border-line/30 shadow-sm hover:border-gold/30 transition-colors"
                     >
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#C9A96E] shrink-0" />
-                      <span className="text-sans-sm !text-[#3A3833]">{feat}</span>
+                      <div className="w-1.5 h-1.5 rounded-full bg-gold shrink-0" />
+                      <span className="text-sans-sm !text-charcoal">{feat}</span>
                     </div>
                   ))}
                 </div>
@@ -189,30 +189,30 @@ export default async function PropertyPage({ params }: PageProps) {
           {/* Right: Price & Contact Card */}
           <div className="lg:col-span-1">
             <div className="sticky top-32">
-              <div className="bg-white rounded-[3rem] p-8 md:p-10 border border-[#D2D6CB]/30 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
+              <div className="bg-white rounded-card-lg p-8 md:p-10 border border-line/30 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
                 {/* Price */}
                 {property.price > 0 ? (
-                  <div className="mb-8 pb-8 border-b border-[#D2D6CB]/50">
-                    <span className="label-caps !text-[#C9A96E] block mb-3">Precio</span>
-                    <div className="title-serif text-4xl text-[#C9A96E]">
+                  <div className="mb-8 pb-8 border-b border-line/50">
+                    <span className="label-caps !text-gold block mb-3">Precio</span>
+                    <div className="title-serif text-4xl text-gold">
                       {formatPrice(property)}
                     </div>
                     {(property.type === "alquiler" || property.type === "alquiler_temporal") && (
-                      <span className="label-caps !text-[#8B9485] mt-2 block">
+                      <span className="label-caps !text-muted mt-2 block">
                         {property.type === "alquiler_temporal" ? "por estadía" : "por mes"}
                       </span>
                     )}
                   </div>
                 ) : (
-                  <div className="mb-8 pb-8 border-b border-[#D2D6CB]/50">
+                  <div className="mb-8 pb-8 border-b border-line/50">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-px bg-[#C9A96E]" />
-                      <span className="label-caps !text-[#C9A96E]">¿Te interesa?</span>
+                      <div className="w-8 h-px bg-gold" />
+                      <span className="label-caps !text-gold">¿Te interesa?</span>
                     </div>
-                    <p className="title-serif text-3xl text-[#1C1814] leading-snug mb-3">
+                    <p className="title-serif text-3xl text-ink leading-snug mb-3">
                       Consultanos por el precio
                     </p>
-                    <p className="text-sans-sm !text-[#8B9485]">
+                    <p className="text-sans-sm !text-muted">
                       Nuestros asesores están disponibles para brindarte toda la información que necesitás.
                     </p>
                   </div>
@@ -225,36 +225,14 @@ export default async function PropertyPage({ params }: PageProps) {
                     label="Consultar por WhatsApp"
                     variant="full"
                     phoneNumber={whatsapp}
-                    className="!bg-[#C9A96E] hover:!bg-[#A8834A] !text-[#1A1714] shadow-[0_2px_8px_rgba(201,169,110,0.25)]"
+                    className="!bg-gold hover:!bg-gold-dark !text-ink shadow-[0_2px_8px_rgba(201,169,110,0.25)]"
                   />
                 </div>
 
-                <p className="label-caps !text-[#8B9485] !text-[9px] text-center mt-8 leading-relaxed normal-case font-medium">
+                <p className="label-caps !text-muted !text-[9px] text-center mt-8 leading-relaxed normal-case font-medium">
                   Nuestro equipo de asesores le responderá en menos de 24 horas hábiles.
                 </p>
               </div>
-
-              {/* Mini details card */}
-              {/* <div className="mt-6 bg-[#1C1814] rounded-[2.5rem] p-8">
-                <span className="label-caps !text-[#C9A96E] block mb-6">Referencia Técnica</span>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sans-sm !text-[12px] !text-[#8B9485]">ID Propiedad</span>
-                    <span className="label-caps !text-[#C9A96E]">
-                      RYA-{property.id.padStart(4, "0")}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center border-t border-white/8 pt-4">
-                    <span className="text-sans-sm !text-[12px] !text-[#8B9485]">Operación</span>
-                    <span className="label-caps !text-[#C9A96E]">{property.type}</span>
-                  </div>
-                  <div className="flex justify-between items-center border-t border-white/8 pt-4">
-                    <span className="text-sans-sm !text-[12px] !text-[#8B9485]">Tipo</span>
-                    <span className="label-caps !text-[#C9A96E]">{property.category}</span>
-                  </div>
-                </div>
-              </div> */}
-
             </div>
           </div>
         </div>
