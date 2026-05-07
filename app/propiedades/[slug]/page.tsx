@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getPropiedades, getPropiedadById, getConfiguracionSite } from "@/lib/api";
 import { formatPrice } from "@/lib/properties";
 import { notFound } from "next/navigation";
+import PropertyGallery from "../../components/PropertyGallery";
 import Badge from "../../components/Badge";
 
 export async function generateStaticParams() {
@@ -50,67 +50,12 @@ export default async function PropertyPage({ params }: PageProps) {
         </Link>
       </div>
 
-      {/* Hero Image Gallery */}
-      <section className="section-container pt-6 pb-16">
-        {/* Mobile Carousel */}
-        <div className="flex md:hidden scroll-snap-x gap-4 pb-4">
-          {property.images.map((img, i) => (
-            <div
-              key={i}
-              className="relative w-[85vw] aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-[#F0EBE1] snap-center"
-            >
-              <Image
-                src={img}
-                fill
-                alt={`${property.title} - Vista ${i + 1}`}
-                className="object-cover"
-                priority={i === 0}
-                unoptimized
-              />
-              <div className="absolute bottom-6 right-6">
-                <span className="label-caps !text-[9px] bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-full text-white">
-                  {i + 1} / {property.images.length}
-                </span>
-              </div>
-            </div>
-          ))}
+      {/* Image Gallery */}
+      <section className="section-container pt-6 pb-12">
+        <div className="flex items-center gap-3 mb-4">
+          <Badge type={property.type} />
         </div>
-
-        {/* Desktop Grid Layout */}
-        <div className="hidden md:grid grid-cols-3 gap-4 h-[70vh] min-h-[480px]">
-          {/* Main large image */}
-          <div className="md:col-span-2 relative rounded-[3rem] overflow-hidden bg-[#F0EBE1]">
-            <Image
-              src={property.images[0]}
-              fill
-              alt={`${property.title} - Vista principal`}
-              className="object-cover hover:scale-[1.02] transition-transform duration-[1.5s]"
-              priority
-              unoptimized
-            />
-            <div className="absolute top-6 left-6">
-              <Badge type={property.type} />
-            </div>
-          </div>
-
-          {/* Side small images */}
-          <div className="flex flex-col gap-4">
-            {property.images.slice(1, 3).map((img, i) => (
-              <div
-                key={i}
-                className="relative flex-1 rounded-[2.5rem] overflow-hidden bg-[#F0EBE1]"
-              >
-                <Image
-                  src={img}
-                  fill
-                  alt={`${property.title} - Vista ${i + 2}`}
-                  className="object-cover hover:scale-[1.02] transition-transform duration-[1.5s]"
-                  unoptimized
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <PropertyGallery images={property.images} title={property.title} />
       </section>
 
       {/* Property Detail */}
@@ -147,29 +92,39 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
 
             {/* Stats Row */}
-            <div className="flex flex-wrap gap-12 mb-12 pb-12 border-b border-[#D2D6CB]/50">
-              <div className="flex flex-col gap-1">
-                <span className="label-caps !text-[#C9A96E]">Dormitorios</span>
-                <span className="title-serif text-4xl">{property.bedrooms}</span>
+            {(property.bedrooms > 0 || property.bathrooms > 0 || property.area > 0) && (
+              <div className="flex flex-wrap gap-12 mb-12 pb-12 border-b border-[#D2D6CB]/50">
+                {property.bedrooms > 0 && (
+                  <div className="flex flex-col gap-1">
+                    <span className="label-caps !text-[#C9A96E]">Dormitorios</span>
+                    <span className="title-serif text-4xl">{property.bedrooms}</span>
+                  </div>
+                )}
+                {property.bathrooms > 0 && (
+                  <div className="flex flex-col gap-1">
+                    <span className="label-caps !text-[#C9A96E]">Baños</span>
+                    <span className="title-serif text-4xl">{property.bathrooms}</span>
+                  </div>
+                )}
+                {property.area > 0 && (
+                  <div className="flex flex-col gap-1">
+                    <span className="label-caps !text-[#C9A96E]">Superficie</span>
+                    <span className="title-serif text-4xl">
+                      {property.area}
+                      <span className="text-xl text-[#8B9485] ml-1">m²</span>
+                    </span>
+                  </div>
+                )}
               </div>
-              <div className="flex flex-col gap-1">
-                <span className="label-caps !text-[#C9A96E]">Baños</span>
-                <span className="title-serif text-4xl">{property.bathrooms}</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="label-caps !text-[#C9A96E]">Superficie</span>
-                <span className="title-serif text-4xl">
-                  {property.area}
-                  <span className="text-xl text-[#8B9485] ml-1">m²</span>
-                </span>
-              </div>
-            </div>
+            )}
 
             {/* Description */}
-            <div className="mb-12">
-              <h2 className="title-serif text-3xl mb-5">Sobre esta propiedad</h2>
-              <p className="text-sans-sm leading-relaxed">{property.description}</p>
-            </div>
+            {property.description && (
+              <div className="mb-12">
+                <h2 className="title-serif text-3xl mb-5">Sobre esta propiedad</h2>
+                <p className="text-sans-sm leading-relaxed">{property.description}</p>
+              </div>
+            )}
 
             {/* Features */}
             {property.features.length > 0 && (
@@ -195,17 +150,32 @@ export default async function PropertyPage({ params }: PageProps) {
             <div className="sticky top-32">
               <div className="bg-white rounded-[3rem] p-8 md:p-10 border border-[#D2D6CB]/30 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
                 {/* Price */}
-                <div className="mb-8 pb-8 border-b border-[#D2D6CB]/50">
-                  <span className="label-caps !text-[#C9A96E] block mb-3">Precio</span>
-                  <div className="title-serif text-4xl text-[#C9A96E]">
-                    {formatPrice(property)}
+                {property.price > 0 ? (
+                  <div className="mb-8 pb-8 border-b border-[#D2D6CB]/50">
+                    <span className="label-caps !text-[#C9A96E] block mb-3">Precio</span>
+                    <div className="title-serif text-4xl text-[#C9A96E]">
+                      {formatPrice(property)}
+                    </div>
+                    {(property.type === "alquiler" || property.type === "alquiler_temporal") && (
+                      <span className="label-caps !text-[#8B9485] mt-2 block">
+                        {property.type === "alquiler_temporal" ? "por estadía" : "por mes"}
+                      </span>
+                    )}
                   </div>
-                  {(property.type === "alquiler" || property.type === "alquiler_temporal") && (
-                    <span className="label-caps !text-[#8B9485] mt-2 block">
-                      {property.type === "alquiler_temporal" ? "por estadía" : "por mes"}
-                    </span>
-                  )}
-                </div>
+                ) : (
+                  <div className="mb-8 pb-8 border-b border-[#D2D6CB]/50">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-px bg-[#C9A96E]" />
+                      <span className="label-caps !text-[#C9A96E]">¿Te interesa?</span>
+                    </div>
+                    <p className="title-serif text-3xl text-[#1C1814] leading-snug mb-3">
+                      Consultanos por el precio
+                    </p>
+                    <p className="text-sans-sm !text-[#8B9485]">
+                      Nuestros asesores están disponibles para brindarte toda la información que necesitás.
+                    </p>
+                  </div>
+                )}
 
                 {/* CTA */}
                 <div className="flex flex-col gap-4">
@@ -217,12 +187,12 @@ export default async function PropertyPage({ params }: PageProps) {
                   >
                     Consultar por WhatsApp
                   </a>
-                  <a
+                  {/* <a
                     href={`mailto:estudiorittayasociados@gmail.com?subject=Consulta sobre ${property.title}&body=Hola, me interesa conocer más sobre la propiedad ${property.title} ubicada en ${property.location}.`}
                     className="btn-outline w-full text-center py-5"
                   >
                     Enviar Email
-                  </a>
+                  </a> */}
                 </div>
 
                 <p className="label-caps !text-[#8B9485] !text-[9px] text-center mt-8 leading-relaxed normal-case font-medium">
@@ -231,7 +201,7 @@ export default async function PropertyPage({ params }: PageProps) {
               </div>
 
               {/* Mini details card */}
-              <div className="mt-6 bg-[#1C1814] rounded-[2.5rem] p-8">
+              {/* <div className="mt-6 bg-[#1C1814] rounded-[2.5rem] p-8">
                 <span className="label-caps !text-[#C9A96E] block mb-6">Referencia Técnica</span>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -249,7 +219,7 @@ export default async function PropertyPage({ params }: PageProps) {
                     <span className="label-caps !text-[#C9A96E]">{property.category}</span>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
             </div>
           </div>

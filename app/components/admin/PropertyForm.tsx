@@ -42,8 +42,7 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
     descripcion: initialData?.description || "",
     precio: initialData?.price || "",
     tipo_operacion: initialData?.type || "venta",
-    tipo_propiedad:
-      initialData?.category === "departamento" ? "depto" : initialData?.category || "casa",
+    tipo_propiedad: initialData?.category || "casa",
     direccion: initialData?.location || "",
     ciudad: initialData?.city || initialData?.neighborhood || "",
     metros_cuadrados: initialData?.area || "",
@@ -173,9 +172,9 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
     onSubmit({
       ...formData,
       precio: Number(formData.precio),
-      metros_cuadrados: Number(formData.metros_cuadrados) || null,
-      habitaciones: Number(formData.habitaciones) || null,
-      banos: Number(formData.banos) || null,
+      metros_cuadrados: formData.metros_cuadrados !== "" ? Number(formData.metros_cuadrados) : null,
+      habitaciones: formData.habitaciones !== "" ? Number(formData.habitaciones) : null,
+      banos: formData.banos !== "" ? Number(formData.banos) : null,
       destacada: formData.destacada,
       caracteristicas: selectedChars,
       imagenes: images,
@@ -256,7 +255,7 @@ export default function PropertyForm({ initialData, onSubmit, isSubmitting }: Pr
                 <label className="block label-caps text-[#8B9485] mb-1.5">Tipo de propiedad *</label>
                 <select name="tipo_propiedad" value={formData.tipo_propiedad} onChange={handleChange} className={selectClass}>
                   <option value="casa">Casa</option>
-                  <option value="depto">Departamento</option>
+                  <option value="departamento">Departamento</option>
                   <option value="terreno">Terreno</option>
                   <option value="local">Local Comercial</option>
                   <option value="oficina">Oficina</option>

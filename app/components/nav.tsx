@@ -1,8 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import WhatsAppButton from "./WhatsAppButton";
 
 export default function Nav() {
+  const pathname = usePathname();
+  if (pathname && pathname.startsWith("/admin")) return null;
   return (
     <>
       <header className="glass-header">

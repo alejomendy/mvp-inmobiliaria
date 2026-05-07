@@ -1,21 +1,20 @@
 import Link from "next/link";
 import { getPropiedades, getPropiedadesDestacadas } from "@/lib/api";
-import Image from "next/image";
 import PropietarioBanner from "./PropietarioBanner";
+import PropertyImageFill from "./PropertyImageFill";
+import { Property } from "@/lib/properties";
 
-function GalleryCard({ property, className }: { property: any, className: string }) {
+function GalleryCard({ property, className }: { property: Property; className: string }) {
   return (
     <Link
       href={`/propiedades/${property.slug}`}
       className={`property-card-container group ${className}`}
     >
-      <Image
+      <PropertyImageFill
         src={property.coverImage}
         alt={property.title}
-        fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="property-card-image"
-        unoptimized
+        className="property-card-image object-cover object-center"
         style={{ objectPosition: "center top" }}
       />
       <div className="property-card-overlay" />
@@ -35,11 +34,9 @@ function GalleryCard({ property, className }: { property: any, className: string
 }
 
 export default async function PropertyGrid() {
-  // Usar destacadas si hay; si no, mostrar las 6 más recientes
   const destacadas = await getPropiedadesDestacadas();
   const source = destacadas.length > 0 ? destacadas : await getPropiedades();
   const homeProperties = source.slice(0, 6);
-
   const items = Array(6).fill(null).map((_, i) => homeProperties[i]);
 
   return (
@@ -62,7 +59,6 @@ export default async function PropertyGrid() {
           </p>
         </div>
 
-        {/* Artistic Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           <div className="flex flex-col gap-8 md:gap-10">
             {items[0] && <GalleryCard property={items[0]} className="aspect-[4/3]" />}
@@ -78,7 +74,6 @@ export default async function PropertyGrid() {
           </div>
         </div>
 
-        {/* CTA to all properties */}
         <div className="mt-16 flex justify-center">
           <Link href="/propiedades" className="btn-outline">
             Ver todas las propiedades
@@ -86,7 +81,6 @@ export default async function PropertyGrid() {
         </div>
       </div>
 
-      {/* Publicá tu propiedad banner */}
       <div className="px-4 md:px-12 pb-16">
         <PropietarioBanner variant="dark" />
       </div>

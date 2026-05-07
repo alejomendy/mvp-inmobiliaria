@@ -18,6 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
     const auth = sessionStorage.getItem("admin_auth");
     if (!auth) {
+      setChecking(false);
       router.replace("/admin/login");
     } else {
       setChecking(false);

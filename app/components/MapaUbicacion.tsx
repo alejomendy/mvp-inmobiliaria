@@ -2,20 +2,17 @@
 
 import { useEffect, useRef } from "react";
 
-// Coordenadas exactas: Alfonsina Storni 105, Adelia María, Córdoba, Argentina
 const LAT  = -33.63532400212576;
 const LNG  = -64.02385563579561;
 const ZOOM = 17;
 
 const GMAPS_URL = `https://www.google.com/maps/search/?api=1&query=${LAT},${LNG}`;
 
-// CSS del popup y fixes de rendering — se inyecta una sola vez en el documento
 const POPUP_STYLES = `
-  /* Fondo del contenedor igual al tile oscuro → gaps de 1px invisibles */
   .leaflet-container {
-    background: #1a1917 !important;
+    background: #F5F4F0 !important;
+    filter: sepia(0.18) saturate(0.85) brightness(1.03);
   }
-  /* Evita costuras entre tiles */
   .leaflet-tile {
     border-right: 1px solid transparent !important;
     border-bottom: 1px solid transparent !important;
@@ -24,12 +21,12 @@ const POPUP_STYLES = `
     will-change: transform;
   }
 
-  /* Popup de marca */
+  /* Popup blanco con borde dorado */
   .rya-popup .leaflet-popup-content-wrapper {
-    background: #1C1814;
-    border: 1px solid rgba(201,169,110,0.35);
+    background: #FFFFFF;
+    border: 1px solid rgba(201,169,110,0.5);
     border-radius: 14px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,169,110,0.1);
+    box-shadow: 0 8px 32px rgba(201,169,110,0.15), 0 2px 8px rgba(0,0,0,0.08);
     padding: 0;
   }
   .rya-popup .leaflet-popup-content {
@@ -48,7 +45,6 @@ export default function MapaUbicacion() {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    // Inyectar CSS del popup una sola vez
     if (!document.getElementById("rya-popup-styles")) {
       const style = document.createElement("style");
       style.id = "rya-popup-styles";
@@ -56,7 +52,6 @@ export default function MapaUbicacion() {
       document.head.appendChild(style);
     }
 
-    // Leaflet CSS
     if (!document.querySelector('link[href*="leaflet"]')) {
       const link = document.createElement("link");
       link.rel  = "stylesheet";
@@ -79,46 +74,46 @@ export default function MapaUbicacion() {
 
       mapRef.current = map;
 
-      // Tiles oscuros CartoDB Dark Matter — premium, combina con la paleta oscura de la marca
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+      // Tiles claros CartoDB Positron — base blanca/gris suave
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
         maxZoom: 19,
         subdomains: "abcd",
       }).addTo(map);
 
-      // Pin SVG personalizado — carbón + anillo dorado + resplandor
+      // Pin dorado sobre fondo blanco
       const iconSvg = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 74" width="56" height="74">
           <defs>
             <radialGradient id="pinGrad" cx="50%" cy="35%" r="60%">
-              <stop offset="0%" stop-color="#2E2822"/>
-              <stop offset="100%" stop-color="#1C1814"/>
+              <stop offset="0%" stop-color="#D4B483"/>
+              <stop offset="100%" stop-color="#C9A96E"/>
             </radialGradient>
             <filter id="pinShadow" x="-40%" y="-20%" width="180%" height="180%">
-              <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#C9A96E" flood-opacity="0.35"/>
+              <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#A8834A" flood-opacity="0.4"/>
             </filter>
             <filter id="glowRing" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feGaussianBlur stdDeviation="3" result="blur"/>
               <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
 
           <!-- Anillo de pulso exterior -->
-          <circle cx="28" cy="24" r="22" fill="rgba(201,169,110,0.08)" filter="url(#glowRing)"/>
-          <circle cx="28" cy="24" r="16" fill="rgba(201,169,110,0.12)"/>
+          <circle cx="28" cy="24" r="22" fill="rgba(201,169,110,0.15)" filter="url(#glowRing)"/>
+          <circle cx="28" cy="24" r="16" fill="rgba(201,169,110,0.2)"/>
 
-          <!-- Cuerpo del pin -->
+          <!-- Cuerpo del pin dorado -->
           <path d="M28 2C16.954 2 8 10.954 8 22c0 16 20 48 20 48S48 38 48 22C48 10.954 39.046 2 28 2z"
             fill="url(#pinGrad)" filter="url(#pinShadow)"/>
 
-          <!-- Borde dorado del pin -->
+          <!-- Borde interior oscuro -->
           <path d="M28 2C16.954 2 8 10.954 8 22c0 16 20 48 20 48S48 38 48 22C48 10.954 39.046 2 28 2z"
-            fill="none" stroke="#C9A96E" stroke-width="1.5" opacity="0.7"/>
+            fill="none" stroke="#A8834A" stroke-width="1.5" opacity="0.6"/>
 
-          <!-- Círculo dorado interior -->
-          <circle cx="28" cy="22" r="11" fill="#C9A96E"/>
+          <!-- Círculo blanco interior -->
+          <circle cx="28" cy="22" r="11" fill="#FFFFFF"/>
 
-          <!-- Punto blanco central -->
-          <circle cx="28" cy="22" r="4.5" fill="#FAFAF7"/>
+          <!-- Punto dorado central -->
+          <circle cx="28" cy="22" r="4.5" fill="#C9A96E"/>
         </svg>
       `;
 
@@ -132,13 +127,13 @@ export default function MapaUbicacion() {
 
       const marker = L.marker([LAT, LNG], { icon: customIcon }).addTo(map);
 
-      // Popup con identidad de marca
+      // Popup blanco con tipografía oscura y acento dorado
       const popupContent = `
-        <div style="font-family:sans-serif;line-height:1.6;color:#D2D6CB;min-width:190px;">
+        <div style="font-family:sans-serif;line-height:1.6;color:#3A3833;min-width:190px;">
           <span style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#C9A96E;font-weight:700;display:block;margin-bottom:6px;">
             Ritta &amp; Asociados
           </span>
-          <span style="font-size:13px;font-weight:600;color:#FAFAF7;display:block;margin-bottom:2px;">
+          <span style="font-size:13px;font-weight:600;color:#1C1814;display:block;margin-bottom:2px;">
             Alfonsina Storni 105
           </span>
           <span style="font-size:12px;color:#8B9485;">
@@ -165,10 +160,8 @@ export default function MapaUbicacion() {
 
   return (
     <div className="relative w-full h-full">
-      {/* Mapa Leaflet */}
       <div ref={containerRef} className="w-full h-full" />
 
-      {/* Botón "Cómo llegar" */}
       <a
         href={GMAPS_URL}
         target="_blank"

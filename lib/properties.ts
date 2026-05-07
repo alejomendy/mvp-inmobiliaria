@@ -22,6 +22,7 @@ export interface Property {
   coverImage: string;
   featured: boolean;
   createdAt: string;
+  estado?: "disponible" | "reservado" | "vendido" | "alquilado";
 }
 
 export const properties: Property[] = [

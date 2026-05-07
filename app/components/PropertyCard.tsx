@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import Badge from "./Badge";
+import PropertyImageFill from "./PropertyImageFill";
 import { Property, formatPrice } from "@/lib/properties";
 
 interface PropertyCardProps {
@@ -11,8 +11,8 @@ function EstadoOverlay({ estado }: { estado?: string }) {
   if (!estado || estado === "disponible") return null;
   const config: Record<string, { label: string; bg: string; text: string }> = {
     reservado: { label: "Reservado", bg: "bg-amber-500", text: "text-white" },
-    vendido: { label: "Vendido", bg: "bg-rose-600", text: "text-white" },
-    alquilado: { label: "Alquilado", bg: "bg-blue-600", text: "text-white" },
+    vendido:   { label: "Vendido",   bg: "bg-rose-600",  text: "text-white" },
+    alquilado: { label: "Alquilado", bg: "bg-blue-600",  text: "text-white" },
   };
   const c = config[estado];
   if (!c) return null;
@@ -37,30 +37,23 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           : "border-[#D2D6CB]/40 hover:border-[#C9A96E]/50 hover:shadow-[0_24px_64px_rgba(201,169,110,0.14)]"
       }`}
     >
-      {/* Property Image */}
-      <div className="relative w-full aspect-[4/3] bg-[#F0EBE1] overflow-hidden">
-        <Image
+      {/* Imagen con tamaño fijo — la imagen se adapta a la card, no al revés */}
+      <div className="relative w-full aspect-[4/3] bg-[#F0EBE1] overflow-hidden shrink-0">
+        <PropertyImageFill
           src={property.coverImage}
-          fill
           alt={property.title}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className={`object-cover object-center transition-transform duration-[1.5s] ${
-            !isUnavailable ? "group-hover:scale-[1.04]" : ""
+          className={`object-cover object-center transition-transform duration-[1.5s]${
+            !isUnavailable ? " group-hover:scale-[1.04]" : ""
           }`}
-          unoptimized
-          onError={(e) => {
-            (e.target as HTMLImageElement).src =
-              "https://placehold.co/600x450/F0EBE1/3A3833?text=Sin+Imagen";
-          }}
         />
         <EstadoOverlay estado={property.estado} />
-        {/* Type badge */}
         <div className="absolute top-5 left-5 z-20">
           <Badge type={property.type} />
         </div>
       </div>
 
-      {/* Property Info */}
+      {/* Info */}
       <div className="flex flex-col flex-1 p-7">
         <span className="label-caps text-[#8B9485] mb-2">
           {property.neighborhood} · {property.city || property.location}
@@ -72,7 +65,6 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           {property.description}
         </p>
 
-        {/* Stats row */}
         <div className="flex gap-5 pb-6 border-b border-[#D2D6CB]/50 mb-6 font-sans text-xs text-[#66615C]">
           {property.bedrooms > 0 && (
             <div className="flex items-center gap-2">
@@ -100,15 +92,20 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           )}
         </div>
 
-        {/* Price & CTA */}
         <div className="flex justify-between items-center">
           <div>
-            <span className="label-caps !text-[#C9A96E] block mb-0.5">Precio</span>
-            <span className="title-serif text-xl text-[#C9A96E]">
-              {formatPrice(property)}
-            </span>
-            {property.type.toLowerCase().includes("alquiler") && (
-              <span className="font-sans text-[10px] text-[#8B9485] ml-1">/mes</span>
+            {property.price > 0 ? (
+              <>
+                <span className="label-caps !text-[#C9A96E] block mb-0.5">Precio</span>
+                <span className="title-serif text-xl text-[#C9A96E]">
+                  {formatPrice(property)}
+                </span>
+                {property.type.toLowerCase().includes("alquiler") && (
+                  <span className="font-sans text-[10px] text-[#8B9485] ml-1">/mes</span>
+                )}
+              </>
+            ) : (
+              <span className="label-caps !text-[#C9A96E]">Consultar precio</span>
             )}
           </div>
           <span className="label-caps text-[#C9A96E] flex items-center gap-2 group-hover:gap-3 transition-all">

@@ -81,7 +81,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { label: "Total", value: properties.length, color: "bg-[#3A3833]" },
-          { label: "Disponibles", value: properties.filter((p) => !p.featured).length, color: "bg-emerald-600" },
+          { label: "Disponibles", value: properties.filter((p) => p.estado === "disponible").length, color: "bg-emerald-600" },
           { label: "En Venta", value: properties.filter((p) => p.type === "venta").length, color: "bg-[#C9A96E]" },
           { label: "En Alquiler", value: properties.filter((p) => p.type === "alquiler" || p.type === "alquiler_temporal").length, color: "bg-[#8B9485]" },
         ].map(({ label, value, color }) => (

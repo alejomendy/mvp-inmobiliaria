@@ -68,18 +68,18 @@ function clearPropiedadesCache() {
   }
 }
 
+const PLACEHOLDER = "https://placehold.co/600x400/F0EBE1/3A3833?text=Sin+Imagen";
+
 // Las imágenes que llegan del backend ya son URLs completas (https://...).
 // Esta función solo es fallback para casos donde llegue una ruta relativa.
 function getImageUrl(url?: string): string {
-  if (!url) return "";
+  if (!url) return PLACEHOLDER;
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
   // Ruta relativa → convertir a URL completa usando la base del backend
   const backendBase = API_URL.replace("/api", "");
   if (url.startsWith("/")) return `${backendBase}${url}`;
   return `${backendBase}/storage/${url}`;
 }
-
-const PLACEHOLDER = "https://placehold.co/600x400/F0EBE1/3A3833?text=Sin+Imagen";
 
 export function mapPropiedadToProperty(p: Propiedad): Property {
   // El backend ya procesa las imagenes y devuelve URLs completas
@@ -108,14 +108,15 @@ export function mapPropiedadToProperty(p: Propiedad): Property {
     bedrooms: p.habitaciones,
     bathrooms: p.banos,
     area: p.metros_cuadrados,
-    features: p.caracteristicas?.map((c) => c.nombre) || [],
+    features: (p.caracteristicas || []).map((c: any) =>
+      typeof c === "string" ? c : (c?.nombre || "")
+    ).filter(Boolean),
     images: imagenesUrls,
     coverImage: imagenesUrls[0],
     featured: p.destacada ?? false,
     createdAt: p.created_at,
-    // Campos extra pasados directamente
     estado: p.estado,
-  } as Property & { estado: EstadoPropiedad };
+  };
 }
 
 export async function getPropiedades(filters?: {
@@ -280,7 +281,7 @@ export async function getConfiguracionSite(): Promise<ConfiguracionSite> {
     hero_imagen: null,
     hero_titulo: "Ritta & Asociados",
     hero_subtitulo: "Estudio Jurídico Integral",
-    filosofia_titulo: "Encontremos un inmueble que se adapte a vos.",
+    filosofia_titulo: "Estudio jurídico integral especializado en derecho civil e inmobiliario.",
     filosofia_texto:
       "Ritta & Asoc. es un estudio jurídico integral dedicado a una amplia variedad de ramas principalmente del derecho civil. En esta web vas a encontrar las propiedades en venta y alquiler disponibles. También vas a poder consultarnos para publicar tu propiedad.",
     filosofia_imagen: null,

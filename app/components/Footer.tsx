@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Instagram, Mail, Phone, MapPin } from "lucide-react";
 import WhatsAppIcon from "./WhatsAppIcon";
 import { waLink } from "./WhatsAppButton";
@@ -6,6 +9,8 @@ import { waLink } from "./WhatsAppButton";
 const WHATSAPP = "543584153649";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname && pathname.startsWith("/admin")) return null;
   return (
     <footer className="bg-[#3A3833] text-[#D2D6CB] relative z-20">
 
@@ -42,13 +47,13 @@ export default function Footer() {
               >
                 <WhatsAppIcon className="w-4 h-4 text-[#8B9485] group-hover:text-white transition-colors" />
               </a>
-              <a
+              {/* <a
                 href="mailto:estudiorittayasociados@gmail.com"
                 aria-label="Email"
                 className="w-9 h-9 rounded-full bg-white/8 hover:bg-[#C9A96E] flex items-center justify-center transition-colors group"
               >
                 <Mail className="w-4 h-4 text-[#8B9485] group-hover:text-white transition-colors" />
-              </a>
+              </a> */}
             </div>
           </div>
 
@@ -114,7 +119,7 @@ export default function Footer() {
                   +54 358 415 3649
                 </a>
               </li>
-              <li className="flex items-center gap-3">
+              {/* <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#C9A96E] shrink-0" />
                 <a
                   href="mailto:estudiorittayasociados@gmail.com"
@@ -122,7 +127,7 @@ export default function Footer() {
                 >
                   estudiorittayasociados@gmail.com
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
 

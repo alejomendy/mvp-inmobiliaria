@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import WhatsAppButton from "./WhatsAppButton";
+import HeroImage from "./HeroImage";
 import { getConfiguracionSite } from "@/lib/api";
 
 const HERO_FALLBACK = "https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=2000&q=90";
@@ -14,14 +15,7 @@ export default async function Hero() {
   return (
     <section className="px-4 md:px-12 pb-16 pt-8 bg-[#FAFAF7]">
       <div className="hero-container group">
-        <Image
-          src={heroImagen}
-          fill
-          alt="Hero Background"
-          className="hero-image"
-          priority
-          unoptimized
-        />
+        <HeroImage src={heroImagen} />
         <div className="hero-overlay" />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
