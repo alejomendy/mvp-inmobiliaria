@@ -3,9 +3,17 @@ import Image from "next/image";
 import WhatsAppButton from "../components/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "Nosotros",
+  title: "Quiénes Somos | Estudio Jurídico Inmobiliario en Adelia María",
   description:
-    "Conocé Ritta & Asociados: estudio jurídico integral en Adelia María, Córdoba, dedicado a propiedades en alquiler y venta, con asesoramiento personalizado.",
+    "Conocé Ritta & Asociados: estudio jurídico integral en Adelia María, Córdoba. Más de años de experiencia en derecho civil, alquiler y venta de propiedades.",
+  keywords: [
+    "estudio jurídico Adelia María",
+    "abogado inmobiliario Adelia María",
+    "asesoramiento legal propiedades Córdoba",
+    "Ritta y Asociados Adelia María",
+    "derecho civil Córdoba",
+  ],
+  alternates: { canonical: "/sobre-nosotros" },
 };
 
 export default function SobreNosotrosPage() {

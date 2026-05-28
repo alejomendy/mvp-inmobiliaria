@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import { getPropiedades, getPropiedadById, getConfiguracionSite } from "@/lib/api";
 import { formatPrice } from "@/lib/properties";
 import { notFound } from "next/navigation";
@@ -28,9 +29,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const image = property.coverImage;
   const url = `${SITE_URL}/propiedades/${slug}`;
 
+  const typeLabel =
+    property.type === "venta" ? "venta" :
+    property.type === "alquiler_temporal" ? "alquiler temporario" : "alquiler";
+
   return {
     title,
     description,
+    keywords: [
+      `${property.category} en ${typeLabel} Adelia María`,
+      `${property.category} ${typeLabel} Córdoba`,
+      property.neighborhood ? `${property.category} ${property.neighborhood}` : "",
+      `inmobiliaria Adelia María`,
+      `Ritta y Asociados`,
+    ].filter(Boolean),
     openGraph: {
       title,
       description,
@@ -69,9 +81,43 @@ export default async function PropertyPage({ params }: PageProps) {
   if (!property) notFound();
 
   const whatsapp = config.whatsapp_numero || undefined;
+  const url = `${SITE_URL}/propiedades/${property.slug}`;
+
+  const propertyJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateListing",
+    name: property.title,
+    description: property.description || `${property.category} en ${property.neighborhood}`,
+    url,
+    image: property.images,
+    ...(property.price > 0 && {
+      offers: {
+        "@type": "Offer",
+        price: property.price,
+        priceCurrency: "ARS",
+        availability: "https://schema.org/InStock",
+      },
+    }),
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: property.location,
+      addressLocality: "Adelia María",
+      addressRegion: "Córdoba",
+      addressCountry: "AR",
+    },
+    floorSize: property.area > 0
+      ? { "@type": "QuantitativeValue", value: property.area, unitCode: "MTK" }
+      : undefined,
+    numberOfRooms: property.bedrooms > 0 ? property.bedrooms : undefined,
+  };
 
   return (
     <main className="min-h-screen bg-surface text-ink selection:bg-gold selection:text-ink">
+      <Script
+        id={`json-ld-property-${property.slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(propertyJsonLd) }}
+      />
 
       {/* Back link */}
       <div className="section-container pt-8 pb-2">

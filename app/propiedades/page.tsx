@@ -3,9 +3,19 @@ import type { Metadata } from "next";
 import PropiedadesContent from "./PropiedadesContent";
 
 export const metadata: Metadata = {
-  title: "Propiedades",
+  title: "Propiedades en Alquiler y Venta en Adelia María",
   description:
-    "Explorá nuestro catálogo de propiedades en alquiler y venta en Adelia María. Casas, departamentos, terrenos y más con asesoramiento jurídico.",
+    "Encontrá casas, departamentos, terrenos y locales en alquiler y venta en Adelia María, Córdoba. Catálogo actualizado con asesoramiento jurídico incluido.",
+  keywords: [
+    "propiedades en alquiler Adelia María",
+    "casas en venta Adelia María",
+    "departamentos Adelia María",
+    "terrenos en venta Adelia María",
+    "locales comerciales Adelia María",
+    "alquiler temporario Córdoba",
+    "inmuebles Córdoba sur",
+  ],
+  alternates: { canonical: "/propiedades" },
 };
 
 export default function PropiedadesPage() {
