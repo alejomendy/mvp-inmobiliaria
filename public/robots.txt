@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rittayasociados.com.ar/sitemap.xml
+Sitemap: https://www.rittaasociados.com.ar/sitemap.xml

@@ -17,7 +17,10 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.rittaasociados.com.ar";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Ritta & Asociados | Estudio Jurídico Inmobiliario",
     template: "%s | Ritta & Asociados",
@@ -25,8 +28,12 @@ export const metadata: Metadata = {
   description:
     "Ritta & Asociados: estudio jurídico integral con amplio catálogo de propiedades en alquiler y venta en Adelia María. Asesoramiento personalizado.",
   keywords: ["inmobiliaria", "alquiler", "venta", "propiedades", "Adelia María", "Ritta & Asociados", "estudio jurídico"],
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
     type: "website",
+    url: SITE_URL,
     locale: "es_AR",
     siteName: "Ritta & Asociados",
     title: "Ritta & Asociados | Estudio Jurídico Inmobiliario",

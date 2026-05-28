@@ -7,7 +7,7 @@ import PropertyGallery from "../../components/PropertyGallery";
 import Badge from "../../components/Badge";
 import WhatsAppButton from "../../components/WhatsAppButton";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rittayasociados.com.ar";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.rittaasociados.com.ar";
 
 // Rutas no incluidas en generateStaticParams se renderizan on-demand en Vercel
 export const dynamicParams = true;

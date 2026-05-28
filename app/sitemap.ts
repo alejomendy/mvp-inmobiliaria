@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getPropiedades } from "@/lib/api";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://rittayasociados.com.ar";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.rittaasociados.com.ar";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const properties = await getPropiedades().catch(() => []);
@@ -25,6 +25,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/sobre-nosotros`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
     },
     {
       url: `${SITE_URL}/contacto`,
