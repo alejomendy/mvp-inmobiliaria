@@ -255,31 +255,6 @@ export async function deletePropiedad(id: string | number): Promise<boolean> {
   }
 }
 
-export interface ContactoPayload {
-  nombre: string;
-  email: string;
-  asunto: string;
-  mensaje: string;
-}
-
-export async function enviarContacto(data: ContactoPayload): Promise<{ success: boolean; message?: string; errors?: Record<string, string[]> }> {
-  try {
-    const response = await fetch(`${API_URL}/contacto`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    const result = await response.json();
-    if (!response.ok) {
-      return { success: false, errors: result.errors };
-    }
-    return { success: true, message: result.message };
-  } catch (error) {
-    console.error("Error al enviar contacto:", error);
-    return { success: false, message: "No se pudo enviar el mensaje. Intentá de nuevo." };
-  }
-}
-
 export async function getCaracteristicas(): Promise<Caracteristica[]> {
   return getCached("caracteristicas", 86_400_000, async () => {
     try {
