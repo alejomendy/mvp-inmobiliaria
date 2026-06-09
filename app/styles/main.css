@@ -61,6 +61,15 @@
   line-height: 1.05;
 }
 
+/* Ampersand reducido dentro de títulos serif: el "&" de Playfair es grande y
+   ornamentado, así que lo achicamos para que no domine sobre las letras. */
+.ampersand-sm {
+  font-size: 0.62em;
+  font-weight: 400;
+  vertical-align: 0.06em;
+  margin: 0 0.01em;
+}
+
 .text-sans-sm {
   font-family: var(--font-inter);
   font-size: 0.875rem;

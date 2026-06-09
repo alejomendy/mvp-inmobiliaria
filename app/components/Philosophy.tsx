@@ -1,5 +1,6 @@
 import WhatsAppButton from "./WhatsAppButton";
 import MapaWrapper from "./MapaWrapper";
+import { conAmpersand } from "./ConAmpersand";
 import { getConfiguracionSite } from "@/lib/api";
 
 export default async function Philosophy() {
@@ -45,7 +46,7 @@ export default async function Philosophy() {
               <span className="label-caps !text-gold">Quiénes somos</span>
             </div>
             <h2 className="title-serif text-5xl md:text-6xl mb-6">
-              {config.filosofia_titulo}
+              {conAmpersand(config.filosofia_titulo)}
             </h2>
             {config.filosofia_texto && (
               <p className="text-sans-sm mb-10">
