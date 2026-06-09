@@ -43,6 +43,18 @@ export interface ConfiguracionSite {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://inmobiliaria-backend-wi6o.onrender.com/api";
 
+// Clave para las operaciones de escritura (crear/editar/borrar propiedades).
+// Debe coincidir con ADMIN_API_KEY del backend. El backend la espera en X-Api-Key.
+const ADMIN_API_KEY = process.env.NEXT_PUBLIC_ADMIN_API_KEY || "";
+
+// Headers para requests de escritura: incluye la clave de API si está configurada.
+function writeHeaders(withJson = true): Record<string, string> {
+  const headers: Record<string, string> = {};
+  if (withJson) headers["Content-Type"] = "application/json";
+  if (ADMIN_API_KEY) headers["X-Api-Key"] = ADMIN_API_KEY;
+  return headers;
+}
+
 // Cache client-side — solo activo en el browser, nunca en build time
 const _cache = new Map<string, { data: unknown; exp: number }>();
 
@@ -191,7 +203,7 @@ export async function createPropiedad(data: Partial<Propiedad>): Promise<Propert
   try {
     const response = await fetch(`${API_URL}/propiedades`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: writeHeaders(),
       body: JSON.stringify(data),
     });
     if (!response.ok) return null;
@@ -211,7 +223,7 @@ export async function updatePropiedad(
   try {
     const response = await fetch(`${API_URL}/propiedades/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: writeHeaders(),
       body: JSON.stringify(data),
     });
     if (!response.ok) return null;
@@ -228,6 +240,7 @@ export async function deletePropiedad(id: string | number): Promise<boolean> {
   try {
     const response = await fetch(`${API_URL}/propiedades/${id}`, {
       method: "DELETE",
+      headers: writeHeaders(false),
     });
     if (response.ok) clearPropiedadesCache();
     return response.ok;
