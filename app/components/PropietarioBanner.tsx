@@ -27,7 +27,7 @@ export default function PropietarioBanner({ variant = "dark" }: PropietarioBanne
           <span className="label-caps !text-gold">Para propietarios</span>
         </div>
         <h3
-          className={`title-serif text-3xl md:text-5xl mb-4 ${isDark ? "text-gold" : ""}`}
+          className={`title-serif text-3xl md:text-5xl mb-4 ${isDark ? "!text-gold" : ""}`}
         >
           Publicá tu propiedad
         </h3>
