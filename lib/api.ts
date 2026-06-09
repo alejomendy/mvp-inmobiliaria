@@ -38,6 +38,10 @@ export interface ConfiguracionSite {
   filosofia_titulo: string;
   filosofia_texto: string | null;
   filosofia_imagen: string | null;
+  filosofia_titulo_fuente: string | null;
+  filosofia_titulo_tamano: string | null;
+  filosofia_texto_fuente: string | null;
+  filosofia_texto_tamano: string | null;
   whatsapp_numero: string | null;
   mapa_lat: number | string | null;
   mapa_lng: number | string | null;
@@ -278,6 +282,10 @@ export async function getConfiguracionSite(): Promise<ConfiguracionSite> {
     filosofia_texto:
       "Ritta & Asoc. es un estudio jurídico integral dedicado a una amplia variedad de ramas principalmente del derecho civil. En esta web vas a encontrar las propiedades en venta y alquiler disponibles. También vas a poder consultarnos para publicar tu propiedad.",
     filosofia_imagen: null,
+    filosofia_titulo_fuente: "serif-elegante",
+    filosofia_titulo_tamano: "normal",
+    filosofia_texto_fuente: "sans-moderna",
+    filosofia_texto_tamano: "normal",
     whatsapp_numero: null,
     mapa_lat: -33.6353240,
     mapa_lng: -64.0238556,

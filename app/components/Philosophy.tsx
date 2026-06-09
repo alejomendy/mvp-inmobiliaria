@@ -2,6 +2,10 @@ import WhatsAppButton from "./WhatsAppButton";
 import MapaWrapper from "./MapaWrapper";
 import { conAmpersand } from "./ConAmpersand";
 import { getConfiguracionSite } from "@/lib/api";
+import {
+  estiloTituloSobreNosotros,
+  estiloTextoSobreNosotros,
+} from "@/lib/sobreNosotros";
 
 export default async function Philosophy() {
   const config = await getConfiguracionSite();
@@ -13,6 +17,15 @@ export default async function Philosophy() {
   const direccion = config.mapa_direccion || "Alfonsina Storni 105";
   const localidad = config.mapa_localidad || "Adelia María, Córdoba (5843)";
   const etiquetaDireccion = [direccion, localidad].filter(Boolean).join(", ");
+
+  const estiloTitulo = estiloTituloSobreNosotros(
+    config.filosofia_titulo_fuente,
+    config.filosofia_titulo_tamano
+  );
+  const estiloTexto = estiloTextoSobreNosotros(
+    config.filosofia_texto_fuente,
+    config.filosofia_texto_tamano
+  );
 
   return (
     <section className="luxury-section -mt-8">
@@ -45,11 +58,11 @@ export default async function Philosophy() {
               <div className="w-12 h-px bg-gold" />
               <span className="label-caps !text-gold">Quiénes somos</span>
             </div>
-            <h2 className="title-serif text-5xl md:text-6xl mb-6">
+            <h2 className="title-serif mb-6" style={estiloTitulo}>
               {conAmpersand(config.filosofia_titulo)}
             </h2>
             {config.filosofia_texto && (
-              <p className="text-sans-sm mb-10">
+              <p className="text-sans-sm mb-10" style={estiloTexto}>
                 {config.filosofia_texto}
               </p>
             )}

@@ -51,8 +51,10 @@ export default function MapaUbicacion({
   direccion = "Alfonsina Storni 105",
   localidad = "Adelia María, Córdoba (5843)",
 }: MapaUbicacionProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef       = useRef<any>(null);
+  const containerRef        = useRef<HTMLDivElement>(null);
+  const mapRef              = useRef<any>(null);
+  const resizeObserverRef   = useRef<ResizeObserver | null>(null);
+  const iniciandoRef        = useRef(false);
 
   const LAT  = Number.isFinite(lat) ? (lat as number) : DEFAULT_LAT;
   const LNG  = Number.isFinite(lng) ? (lng as number) : DEFAULT_LNG;
@@ -76,7 +78,18 @@ export default function MapaUbicacion({
       document.head.appendChild(link);
     }
 
-    import("leaflet").then((L) => {
+    // El contenedor usa aspect-ratio y el componente se importa dinámicamente:
+    // si Leaflet se inicializa antes de que el contenedor tenga tamaño real,
+    // pide solo el tile central y el resto queda en blanco (el bug del mapa
+    // "roto"). Por eso diferimos la creación hasta tener un tamaño > 0 y la
+    // disparamos vía ResizeObserver.
+    const iniciarMapa = () => {
+      if (mapRef.current || iniciandoRef.current) return;
+      const el = containerRef.current;
+      if (!el || el.clientWidth === 0 || el.clientHeight === 0) return;
+      iniciandoRef.current = true;
+
+      import("leaflet").then((L) => {
       if (!containerRef.current || mapRef.current) return;
 
       const map = L.map(containerRef.current, {
@@ -142,6 +155,10 @@ export default function MapaUbicacion({
         popupAnchor: [0, -80],
       });
 
+      // Recalcula el tamaño ya con el contenedor montado, por si quedó algún
+      // ajuste pendiente de layout tras crear el mapa.
+      requestAnimationFrame(() => map.invalidateSize());
+
       const marker = L.marker([LAT, LNG], { icon: customIcon }).addTo(map);
 
       // Escape para insertar texto del admin de forma segura en el HTML del popup
@@ -171,14 +188,43 @@ export default function MapaUbicacion({
         className: "rya-popup",
         maxWidth: 260,
       }).openPopup();
-    }).catch(() => {
-      if (containerRef.current) {
-        containerRef.current.innerHTML =
-          '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8B9485;font-size:13px;font-family:sans-serif;">Mapa no disponible</div>';
-      }
-    });
+      }).catch(() => {
+        iniciandoRef.current = false;
+        if (containerRef.current) {
+          containerRef.current.innerHTML =
+            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8B9485;font-size:13px;font-family:sans-serif;">Mapa no disponible</div>';
+        }
+      });
+    };
+
+    // Si el contenedor ya tiene tamaño, arranca de una. Si todavía no (oculto,
+    // layout sin asentar, ventana colapsada), el observer lo crea al tenerlo, y
+    // luego recalcula los tiles ante cualquier cambio de tamaño.
+    iniciarMapa();
+    if (typeof ResizeObserver !== "undefined" && containerRef.current) {
+      const ro = new ResizeObserver(() => {
+        if (mapRef.current) {
+          mapRef.current.invalidateSize();
+        } else {
+          iniciarMapa();
+        }
+      });
+      ro.observe(containerRef.current);
+      resizeObserverRef.current = ro;
+    }
+
+    // Reintentos de respaldo: si el contenedor todavía no tenía tamaño al montar
+    // y el ResizeObserver no llega a dispararse, igual creamos el mapa cuando el
+    // layout se asiente.
+    const reintentos = [120, 350, 700, 1200].map((ms) => setTimeout(iniciarMapa, ms));
 
     return () => {
+      reintentos.forEach(clearTimeout);
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect();
+        resizeObserverRef.current = null;
+      }
+      iniciandoRef.current = false;
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
