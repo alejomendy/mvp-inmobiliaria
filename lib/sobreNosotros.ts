@@ -9,10 +9,16 @@ import type { CSSProperties } from "react";
 // Familias tipográficas curadas. Reutilizan las fuentes ya cargadas por
 // next/font (Playfair, Inter) y caen en web-safe para no romper el diseño.
 const FUENTES: Record<string, string> = {
-  "serif-elegante": "var(--font-playfair), Georgia, serif",
-  "serif-clasica": "Georgia, 'Times New Roman', serif",
-  "sans-moderna": "var(--font-inter), system-ui, sans-serif",
-  "sans-neutra": "'Segoe UI', system-ui, -apple-system, sans-serif",
+  // Serif elegantes (estilo "Estudio Jurídico Integral" del hero)
+  "serif-elegante":   "var(--font-playfair), Georgia, serif",
+  "serif-cormorant":  "var(--font-cormorant), Georgia, serif",
+  "serif-garamond":   "var(--font-eb-garamond), Georgia, serif",
+  "serif-lora":       "var(--font-lora), Georgia, serif",
+  // Clásica web-safe sin dependencia de carga
+  "serif-clasica":    "Georgia, 'Times New Roman', serif",
+  // Sans
+  "sans-moderna":     "var(--font-inter), system-ui, sans-serif",
+  "sans-neutra":      "'Segoe UI', system-ui, -apple-system, sans-serif",
 };
 
 // Tamaños del título. "normal" replica el text-5xl→6xl original (responsive via clamp).
