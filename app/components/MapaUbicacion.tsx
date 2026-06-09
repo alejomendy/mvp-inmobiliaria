@@ -16,8 +16,7 @@ export interface MapaUbicacionProps {
 
 const POPUP_STYLES = `
   .leaflet-container {
-    background: #F5F4F0 !important;
-    filter: sepia(0.18) saturate(0.85) brightness(1.03);
+    background: #e8e4dc !important;
   }
   .leaflet-tile {
     border-right: 1px solid transparent !important;
@@ -105,7 +104,7 @@ export default function MapaUbicacion({
       mapRef.current = map;
 
       // Tiles claros CartoDB Positron — base blanca/gris suave
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
         maxZoom: 19,
         subdomains: "abcd",
       }).addTo(map);
