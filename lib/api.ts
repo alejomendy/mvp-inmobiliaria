@@ -39,6 +39,11 @@ export interface ConfiguracionSite {
   filosofia_texto: string | null;
   filosofia_imagen: string | null;
   whatsapp_numero: string | null;
+  mapa_lat: number | string | null;
+  mapa_lng: number | string | null;
+  mapa_zoom: number | null;
+  mapa_direccion: string | null;
+  mapa_localidad: string | null;
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://inmobiliaria-backend-wi6o.onrender.com/api";
@@ -299,6 +304,11 @@ export async function getConfiguracionSite(): Promise<ConfiguracionSite> {
       "Ritta & Asoc. es un estudio jurídico integral dedicado a una amplia variedad de ramas principalmente del derecho civil. En esta web vas a encontrar las propiedades en venta y alquiler disponibles. También vas a poder consultarnos para publicar tu propiedad.",
     filosofia_imagen: null,
     whatsapp_numero: null,
+    mapa_lat: -33.6353240,
+    mapa_lng: -64.0238556,
+    mapa_zoom: 17,
+    mapa_direccion: "Alfonsina Storni 105",
+    mapa_localidad: "Adelia María, Córdoba (5843)",
   };
 
   try {

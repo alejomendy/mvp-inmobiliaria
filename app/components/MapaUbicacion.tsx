@@ -2,11 +2,17 @@
 
 import { useEffect, useRef } from "react";
 
-const LAT  = -33.63532400212576;
-const LNG  = -64.02385563579561;
-const ZOOM = 17;
+const DEFAULT_LAT  = -33.63532400212576;
+const DEFAULT_LNG  = -64.02385563579561;
+const DEFAULT_ZOOM = 17;
 
-const GMAPS_URL = `https://www.google.com/maps/search/?api=1&query=${LAT},${LNG}`;
+export interface MapaUbicacionProps {
+  lat?: number;
+  lng?: number;
+  zoom?: number;
+  direccion?: string;
+  localidad?: string;
+}
 
 const POPUP_STYLES = `
   .leaflet-container {
@@ -38,9 +44,20 @@ const POPUP_STYLES = `
   }
 `;
 
-export default function MapaUbicacion() {
+export default function MapaUbicacion({
+  lat,
+  lng,
+  zoom,
+  direccion = "Alfonsina Storni 105",
+  localidad = "Adelia María, Córdoba (5843)",
+}: MapaUbicacionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef       = useRef<any>(null);
+
+  const LAT  = Number.isFinite(lat) ? (lat as number) : DEFAULT_LAT;
+  const LNG  = Number.isFinite(lng) ? (lng as number) : DEFAULT_LNG;
+  const ZOOM = Number.isFinite(zoom) ? (zoom as number) : DEFAULT_ZOOM;
+  const GMAPS_URL = `https://www.google.com/maps/search/?api=1&query=${LAT},${LNG}`;
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -127,6 +144,12 @@ export default function MapaUbicacion() {
 
       const marker = L.marker([LAT, LNG], { icon: customIcon }).addTo(map);
 
+      // Escape para insertar texto del admin de forma segura en el HTML del popup
+      const esc = (s: string) =>
+        s.replace(/[&<>"']/g, (c) =>
+          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string)
+        );
+
       // Popup blanco con tipografía oscura y acento dorado
       const popupContent = `
         <div style="font-family:sans-serif;line-height:1.6;color:#3A3833;min-width:190px;">
@@ -134,10 +157,10 @@ export default function MapaUbicacion() {
             Ritta &amp; Asociados
           </span>
           <span style="font-size:13px;font-weight:600;color:#1C1814;display:block;margin-bottom:2px;">
-            Alfonsina Storni 105
+            ${esc(direccion)}
           </span>
           <span style="font-size:12px;color:#8B9485;">
-            Adelia María, Córdoba (5843)
+            ${esc(localidad)}
           </span>
         </div>
       `;
@@ -161,7 +184,7 @@ export default function MapaUbicacion() {
         mapRef.current = null;
       }
     };
-  }, []);
+  }, [LAT, LNG, ZOOM, direccion, localidad]);
 
   return (
     <div className="relative w-full h-full">

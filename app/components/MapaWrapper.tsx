@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { MapaUbicacionProps } from "./MapaUbicacion";
 
 const MapaUbicacion = dynamic(() => import("./MapaUbicacion"), {
   ssr: false,
@@ -14,6 +15,6 @@ const MapaUbicacion = dynamic(() => import("./MapaUbicacion"), {
   ),
 });
 
-export default function MapaWrapper() {
-  return <MapaUbicacion />;
+export default function MapaWrapper(props: MapaUbicacionProps) {
+  return <MapaUbicacion {...props} />;
 }
