@@ -62,7 +62,7 @@ export default function PropiedadesContent() {
         </div>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
           <h1 className="title-serif text-5xl md:text-7xl">Propiedades</h1>
-          <p className="text-sans-sm max-w-xs md:text-right">
+          <p className="text-sans-sm whitespace-nowrap md:text-right">
             Encontremos un inmueble que se adapte a vos.
           </p>
         </div>

@@ -29,7 +29,7 @@ export default function WhatsAppButton({
 
   const variants: Record<string, string> = {
     pill: "text-[10px] md:text-xs px-6 py-3.5 rounded-full shadow-sm",
-    full: "text-xs px-10 py-5 rounded-full shadow-lg w-full",
+    full: "text-[10px] px-6 py-5 rounded-full shadow-lg w-full whitespace-nowrap",
     ghost:
       "text-[10px] text-white/90 !bg-transparent hover:!bg-transparent hover:!text-white !shadow-none",
   };

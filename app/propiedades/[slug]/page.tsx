@@ -267,7 +267,7 @@ export default async function PropertyPage({ params }: PageProps) {
                 {/* CTA */}
                 <div className="flex flex-col gap-4">
                   <WhatsAppButton
-                    message={`Hola! Me interesa la propiedad: ${property.title} en ${property.location}`}
+                    message={`Hola! Me interesa la propiedad: ${url}`}
                     label="Consultar por WhatsApp"
                     variant="full"
                     phoneNumber={whatsapp}

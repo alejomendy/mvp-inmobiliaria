@@ -32,7 +32,7 @@ export default async function Hero() {
           </h1>
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-px bg-gold/70" />
-            <p className="text-white/90 font-serif text-lg md:text-2xl tracking-wide drop-shadow-sm italic">
+            <p className="text-white/90 font-serif text-lg md:text-2xl tracking-wide drop-shadow-sm italic whitespace-nowrap">
               {config.hero_subtitulo}
             </p>
             <div className="w-12 h-px bg-gold/70" />

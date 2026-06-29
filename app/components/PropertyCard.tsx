@@ -55,7 +55,9 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       {/* Info */}
       <div className="flex flex-col flex-1 p-7">
         <span className="label-caps text-muted mb-2">
-          {property.neighborhood} · {property.city || property.location}
+          {property.neighborhood && property.city && property.neighborhood.toLowerCase() !== property.city.toLowerCase()
+            ? `${property.neighborhood} · ${property.city}`
+            : property.neighborhood || property.city || property.location}
         </span>
         <h2 className="title-serif text-2xl text-ink mb-3 group-hover:text-charcoal transition-colors leading-tight">
           {property.title}
