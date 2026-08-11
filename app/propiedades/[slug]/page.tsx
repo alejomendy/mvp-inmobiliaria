@@ -10,6 +10,12 @@ import WhatsAppButton from "../../components/WhatsAppButton";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.rittaasociados.com.ar";
 
+const ESTADO_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
+  reservado: { label: "Reservado", bg: "bg-amber-500", text: "text-white" },
+  vendido:   { label: "Vendido",   bg: "bg-rose-600",  text: "text-white" },
+  alquilado: { label: "Alquilado", bg: "bg-blue-600",  text: "text-white" },
+};
+
 // Rutas no incluidas en generateStaticParams se renderizan on-demand en Vercel
 export const dynamicParams = true;
 
@@ -82,6 +88,9 @@ export default async function PropertyPage({ params }: PageProps) {
 
   const whatsapp = config.whatsapp_numero || undefined;
   const url = `${SITE_URL}/propiedades/${property.slug}`;
+  const estado = property.estado;
+  const isUnavailable = !!estado && estado !== "disponible";
+  const estadoInfo = isUnavailable ? ESTADO_CONFIG[estado] : undefined;
 
   const propertyJsonLd = {
     "@context": "https://schema.org",
@@ -141,6 +150,11 @@ export default async function PropertyPage({ params }: PageProps) {
       <section className="section-container pt-6 pb-12">
         <div className="flex items-center gap-3 mb-4">
           <Badge type={property.type} />
+          {estadoInfo && (
+            <span className={`${estadoInfo.bg} ${estadoInfo.text} label-caps px-4 py-1.5 rounded-full text-[11px] shadow-sm`}>
+              {estadoInfo.label}
+            </span>
+          )}
         </div>
         <PropertyGallery images={property.images} title={property.title} />
       </section>
@@ -236,6 +250,18 @@ export default async function PropertyPage({ params }: PageProps) {
           <div className="lg:col-span-1">
             <div className="sticky top-32">
               <div className="bg-white rounded-card-lg p-8 md:p-10 border border-line/30 shadow-[0_20px_60px_rgba(0,0,0,0.05)]">
+                {/* Estado no disponible */}
+                {estadoInfo && (
+                  <div className="mb-8 pb-8 border-b border-line/50">
+                    <span className={`${estadoInfo.bg} ${estadoInfo.text} label-caps inline-block px-4 py-1.5 rounded-full text-[11px] mb-4`}>
+                      {estadoInfo.label}
+                    </span>
+                    <p className="text-sans-sm !text-muted">
+                      Esta propiedad ya no se encuentra disponible. Consultanos por otras opciones similares.
+                    </p>
+                  </div>
+                )}
+
                 {/* Price */}
                 {property.price > 0 ? (
                   <div className="mb-8 pb-8 border-b border-line/50">

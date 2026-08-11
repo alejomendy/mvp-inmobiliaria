@@ -4,7 +4,17 @@ import PropietarioBanner from "./PropietarioBanner";
 import PropertyImageFill from "./PropertyImageFill";
 import { Property } from "@/lib/properties";
 
+const ESTADO_CONFIG: Record<string, { label: string; bg: string; text: string }> = {
+  reservado: { label: "Reservado", bg: "bg-amber-500", text: "text-white" },
+  vendido:   { label: "Vendido",   bg: "bg-rose-600",  text: "text-white" },
+  alquilado: { label: "Alquilado", bg: "bg-blue-600",  text: "text-white" },
+};
+
 function GalleryCard({ property, className }: { property: Property; className: string }) {
+  const estado = property.estado;
+  const isUnavailable = !!estado && estado !== "disponible";
+  const c = isUnavailable ? ESTADO_CONFIG[estado] : undefined;
+
   return (
     <Link
       href={`/propiedades/${property.slug}`}
@@ -18,6 +28,13 @@ function GalleryCard({ property, className }: { property: Property; className: s
         style={{ objectPosition: "center top" }}
       />
       <div className="property-card-overlay" />
+      {c && (
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
+          <span className={`${c.bg} ${c.text} label-caps px-5 py-2 rounded-full text-[11px] shadow-lg`}>
+            {c.label}
+          </span>
+        </div>
+      )}
       <div className="property-card-content">
         <span className="label-caps !text-white !opacity-90 mb-2 drop-shadow-sm">
           {property.neighborhood} · {property.type}
