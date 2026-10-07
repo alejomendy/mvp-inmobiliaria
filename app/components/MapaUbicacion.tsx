@@ -108,14 +108,17 @@ export default function MapaUbicacion({
             scrollWheelZoom: false,
             dragging: false,
             doubleClickZoom: false,
-            attributionControl: false,
           });
+          leafletMap.attributionControl.setPrefix(false);
 
           mapRef.current = leafletMap;
 
           L.tileLayer(
-            "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-            { maxZoom: 19, subdomains: "abcd" }
+            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+              maxZoom: 19,
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }
           ).addTo(leafletMap);
 
           const customIcon = L.divIcon({
