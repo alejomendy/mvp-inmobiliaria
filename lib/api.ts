@@ -14,6 +14,7 @@ export interface Propiedad {
   titulo: string;
   descripcion: string;
   precio: number;
+  moneda?: "USD" | "ARS";
   tipo_operacion: TipoOperacion;
   tipo_propiedad: TipoPropiedad;
   direccion: string;
@@ -122,7 +123,7 @@ export function mapPropiedadToProperty(p: Propiedad): Property {
         : p.tipo_propiedad || "propiedad"
     ) as PropertyCategory,
     price: p.precio,
-    currency: "USD",
+    currency: p.moneda === "ARS" ? "ARS" : "USD",
     location: p.direccion,
     neighborhood: p.ciudad,
     city: p.ciudad,

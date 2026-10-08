@@ -103,7 +103,7 @@ export default async function PropertyPage({ params }: PageProps) {
       offers: {
         "@type": "Offer",
         price: property.price,
-        priceCurrency: "ARS",
+        priceCurrency: property.currency,
         availability: "https://schema.org/InStock",
       },
     }),
